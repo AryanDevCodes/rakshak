@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,31 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Crime reporting system custom colors
+				police: {
+					50: '#EEF2FF',
+					100: '#E0E7FF',
+					200: '#C7D2FE',
+					300: '#A5B4FC',
+					400: '#818CF8',
+					500: '#6366F1',
+					600: '#4F46E5',
+					700: '#4338CA',
+					800: '#1E3A8A',
+					900: '#1E3A8A',
+				},
+				emergency: {
+					50: '#FEF2F2',
+					100: '#FEE2E2',
+					200: '#FECACA',
+					300: '#FCA5A5',
+					400: '#F87171',
+					500: '#EF4444',
+					600: '#DC2626',
+					700: '#B91C1C',
+					800: '#991B1B',
+					900: '#7F1D1D',
 				}
 			},
 			borderRadius: {
@@ -84,11 +110,22 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'pulse-urgent': {
+					'0%, 100%': { 
+						transform: 'scale(1)',
+						opacity: '1' 
+					},
+					'50%': { 
+						transform: 'scale(1.05)', 
+						opacity: '0.9' 
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-urgent': 'pulse-urgent 1.5s infinite'
 			}
 		}
 	},
