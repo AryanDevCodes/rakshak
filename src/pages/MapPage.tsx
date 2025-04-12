@@ -40,7 +40,7 @@ const MapPage = () => {
       toast({
         title: "PDF Generated Successfully",
         description: "Your document has been downloaded.",
-        variant: "success"
+        variant: "default" // Changed from "success" to "default" as it's a valid variant
       });
     } catch (error) {
       console.error("PDF generation error:", error);
