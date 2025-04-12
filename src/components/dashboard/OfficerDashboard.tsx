@@ -1,18 +1,20 @@
 
-import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Shield, 
-  Clock, 
-  CheckCircle, 
-  AlertTriangle, 
-  User, 
-  MapPin, 
+import { Button } from '@/components/ui/button'; // Added this import to fix Button errors
+import {
+  AlertTriangle,
+  Bell,
   Calendar,
+  CheckCircle,
+  Clock,
   FileText,
-  Bell
+  MapPin,
+  MoreHorizontal,
+  ShieldAlert,
+  User,
+  Users
 } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
