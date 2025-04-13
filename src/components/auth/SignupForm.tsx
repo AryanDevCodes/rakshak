@@ -33,39 +33,48 @@ import { Shield, User, UserCheck, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 // Form schema for validation
-const loginSchema = z.object({
+const signupSchema = z.object({
+  name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
   email: z.string().email({ message: 'Please enter a valid email address' }),
-  password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
+  password: z.string().min(8, { message: 'Password must be at least 8 characters' }),
+  confirmPassword: z.string().min(8, { message: 'Password must be at least 8 characters' }),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
 });
 
 // Type for form values
-type LoginFormValues = z.infer<typeof loginSchema>;
+type SignupFormValues = z.infer<typeof signupSchema>;
 
-const LoginForm = () => {
+const SignupForm = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { register } = useAuth();
   const { toast } = useToast();
   const [selectedRole, setSelectedRole] = useState<UserRole>('user');
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
 
   // Initialize form
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<SignupFormValues>({
+    resolver: zodResolver(signupSchema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
+      confirmPassword: '',
     },
   });
 
   // Handle form submission
-  const onSubmit = async (values: LoginFormValues) => {
+  const onSubmit = async (values: SignupFormValues) => {
     try {
-      setIsLoggingIn(true);
-      await login(values.email, values.password, selectedRole);
+      setIsRegistering(true);
+      
+      // Use the registration function from auth context
+      await register(values.name, values.email, values.password, selectedRole);
       
       toast({
-        title: "Login successful",
-        description: `Welcome back!`,
+        title: "Registration successful",
+        description: `Welcome to SafeCity!`,
         variant: "default",
       });
       
@@ -79,44 +88,26 @@ const LoginForm = () => {
       }
     } catch (error) {
       toast({
-        title: "Login failed",
+        title: "Registration failed",
         description: error instanceof Error ? error.message : "Something went wrong",
         variant: "destructive",
       });
     } finally {
-      setIsLoggingIn(false);
+      setIsRegistering(false);
     }
   };
 
   // Handle role tab change
   const handleRoleChange = (value: string) => {
     setSelectedRole(value as UserRole);
-    
-    // Pre-fill demo credentials based on role
-    let email = '';
-    
-    switch(value) {
-      case 'officer':
-        email = 'officer@police.gov';
-        break;
-      case 'admin':
-        email = 'admin@safecity.org';
-        break;
-      case 'user':
-      default:
-        email = 'john@example.com';
-    }
-    
-    form.setValue('email', email);
-    form.setValue('password', 'password123');
   };
 
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold text-center">Login</CardTitle>
+        <CardTitle className="text-2xl font-bold text-center">Create Account</CardTitle>
         <CardDescription className="text-center">
-          Select your role to continue
+          Register a new account to use SafeCity services
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -138,23 +129,37 @@ const LoginForm = () => {
           
           <TabsContent value="user">
             <div className="p-4 bg-blue-50 rounded-md mb-4 text-sm">
-              Login as a citizen to report incidents and view crime data.
+              Register as a citizen to report incidents and access safety features.
             </div>
           </TabsContent>
           <TabsContent value="officer">
             <div className="p-4 bg-blue-50 rounded-md mb-4 text-sm">
-              Login as a police officer to manage incidents and respond to reports.
+              Officer accounts require verification before full access is granted.
             </div>
           </TabsContent>
           <TabsContent value="admin">
             <div className="p-4 bg-blue-50 rounded-md mb-4 text-sm">
-              Login as an administrator to manage the system and access all features.
+              Admin registration is restricted and requires special authorization.
             </div>
           </TabsContent>
         </Tabs>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Full Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter your full name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
             <FormField
               control={form.control}
               name="email"
@@ -176,21 +181,35 @@ const LoginForm = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Enter your password" {...field} />
+                    <Input type="password" placeholder="Create a password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             
-            <Button type="submit" className="w-full bg-police-700 hover:bg-police-800" disabled={isLoggingIn}>
-              {isLoggingIn ? (
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="Confirm your password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            <Button type="submit" className="w-full bg-police-700 hover:bg-police-800" disabled={isRegistering}>
+              {isRegistering ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Logging in...
+                  Creating account...
                 </>
               ) : (
-                'Sign In'
+                'Sign Up'
               )}
             </Button>
           </form>
@@ -198,9 +217,9 @@ const LoginForm = () => {
       </CardContent>
       <CardFooter className="flex justify-center border-t pt-4">
         <div className="text-sm text-muted-foreground">
-          Don't have an account?{' '}
-          <Link to="/signup" className="text-police-700 hover:underline">
-            Sign up
+          Already have an account?{' '}
+          <Link to="/login" className="text-police-700 hover:underline">
+            Sign in
           </Link>
         </div>
       </CardFooter>
@@ -208,4 +227,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default SignupForm;

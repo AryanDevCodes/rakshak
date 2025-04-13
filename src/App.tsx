@@ -11,6 +11,7 @@ import MapPage from "./pages/MapPage";
 import DashboardPage from "./pages/DashboardPage";
 import NotFound from "./pages/NotFound";
 import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 // Create a new QueryClient instance
@@ -27,6 +28,7 @@ const App = () => {
             {/* Public routes */}
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
             <Route path="/emergency" element={<EmergencyPage />} />
             <Route path="/map" element={<MapPage />} />
             

@@ -19,6 +19,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   role: UserRole;
   login: (email: string, password: string, role: UserRole) => Promise<void>;
+  register: (name: string, email: string, password: string, role: UserRole) => Promise<void>;
   logout: () => void;
   loading: boolean;
 }
@@ -29,6 +30,7 @@ const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   role: null,
   login: async () => {},
+  register: async () => {},
   logout: () => {},
   loading: true,
 });
@@ -94,6 +96,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     
     setLoading(false);
   };
+  
+  // Mock register function for demo
+  const register = async (name: string, email: string, password: string, role: UserRole): Promise<void> => {
+    setLoading(true);
+    
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    // Simple validation for demo purposes
+    if (!name || !email || !password || !role) {
+      throw new Error('Please provide all required fields');
+    }
+    
+    // Create a new demo user
+    const newUserId = `${role}-${Date.now()}`;
+    const avatars = {
+      user: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      officer: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      admin: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    };
+    
+    const newUser: User = {
+      id: newUserId,
+      name,
+      email,
+      role: role,
+      avatar: avatars[role as keyof typeof avatars],
+    };
+    
+    // Save the new user
+    setUser(newUser);
+    localStorage.setItem('safecity_user', JSON.stringify(newUser));
+    
+    setLoading(false);
+  };
 
   // Logout function
   const logout = () => {
@@ -106,6 +143,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     isAuthenticated: !!user,
     role: user?.role || null,
     login,
+    register,
     logout,
     loading
   };

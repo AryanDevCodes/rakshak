@@ -3,7 +3,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
-  Shield, AlertCircle, Map, Menu, Home, FileText, LogIn
+  Shield, AlertCircle, Map, Menu, Home, FileText, LogIn, UserPlus
 } from 'lucide-react';
 import {
   Sheet,
@@ -59,23 +59,52 @@ const Navbar = () => {
             {isAuthenticated ? (
               <UserProfile />
             ) : (
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="ml-4"
-                onClick={() => navigate('/login')}
-              >
-                <LogIn className="h-4 w-4 mr-2" />
-                Login
-              </Button>
+              <div className="flex items-center space-x-2">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => navigate('/login')}
+                >
+                  <LogIn className="h-4 w-4 mr-2" />
+                  Login
+                </Button>
+                <Button 
+                  variant="default" 
+                  size="sm"
+                  className="bg-police-700 hover:bg-police-800"
+                  onClick={() => navigate('/signup')}
+                >
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Sign Up
+                </Button>
+              </div>
             )}
           </div>
           
           {/* Mobile Navigation */}
           <div className="md:hidden flex items-center">
-            {isAuthenticated && (
+            {isAuthenticated ? (
               <div className="mr-4">
                 <UserProfile />
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2 mr-2">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="px-1"
+                  onClick={() => navigate('/login')}
+                >
+                  <LogIn className="h-4 w-4" />
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="px-1"
+                  onClick={() => navigate('/signup')}
+                >
+                  <UserPlus className="h-4 w-4" />
+                </Button>
               </div>
             )}
             
@@ -99,13 +128,23 @@ const Navbar = () => {
                   ))}
                   
                   {!isAuthenticated && (
-                    <Button 
-                      className="mt-4"
-                      onClick={() => navigate('/login')}
-                    >
-                      <LogIn className="h-4 w-4 mr-2" />
-                      Login
-                    </Button>
+                    <div className="flex flex-col space-y-2 mt-4">
+                      <Button 
+                        onClick={() => navigate('/login')}
+                        className="justify-start"
+                        variant="outline"
+                      >
+                        <LogIn className="h-4 w-4 mr-2" />
+                        Login
+                      </Button>
+                      <Button 
+                        onClick={() => navigate('/signup')}
+                        className="justify-start bg-police-700"
+                      >
+                        <UserPlus className="h-4 w-4 mr-2" />
+                        Sign Up
+                      </Button>
+                    </div>
                   )}
                 </div>
               </SheetContent>
