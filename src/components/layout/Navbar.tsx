@@ -1,34 +1,47 @@
 
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
-  Shield, AlertCircle, Map, User, Menu, X, LifeBuoy, FileText, Home
+  Shield, AlertCircle, Map, Menu, Home, FileText, LogIn
 } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useAuth } from '@/contexts/AuthContext';
+import UserProfile from '@/components/auth/UserProfile';
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isAuthenticated, role } = useAuth();
+  const navigate = useNavigate();
   
   const navItems = [
     { name: 'Home', path: '/', icon: <Home className="h-5 w-5 mr-2" /> },
     { name: 'Report Crime', path: '/report', icon: <FileText className="h-5 w-5 mr-2" /> },
     { name: 'Emergency', path: '/emergency', icon: <AlertCircle className="h-5 w-5 mr-2" /> },
     { name: 'Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> },
-    { name: 'Officer Dashboard', path: '/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
   ];
+  
+  // Add dashboard link for officers and admins
+  if (role === 'officer' || role === 'admin') {
+    navItems.push({ 
+      name: 'Dashboard', 
+      path: '/dashboard', 
+      icon: <Shield className="h-5 w-5 mr-2" /> 
+    });
+  }
 
   return (
-    <nav className="bg-white shadow-sm border-b">
+    <nav className="bg-white shadow-sm border-b sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Shield className="h-8 w-8 text-police-700" />
-            <span className="text-xl font-bold text-police-700">SafeCity</span>
+            <Link to="/" className="flex items-center space-x-2">
+              <Shield className="h-8 w-8 text-police-700" />
+              <span className="text-xl font-bold text-police-700">SafeCity</span>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
@@ -42,14 +55,30 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
-            <Button variant="outline" size="sm" className="ml-4">
-              <User className="h-4 w-4 mr-2" />
-              Login
-            </Button>
+            
+            {isAuthenticated ? (
+              <UserProfile />
+            ) : (
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="ml-4"
+                onClick={() => navigate('/login')}
+              >
+                <LogIn className="h-4 w-4 mr-2" />
+                Login
+              </Button>
+            )}
           </div>
           
           {/* Mobile Navigation */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center">
+            {isAuthenticated && (
+              <div className="mr-4">
+                <UserProfile />
+              </div>
+            )}
+            
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="sm">
@@ -63,16 +92,21 @@ const Navbar = () => {
                       key={item.path}
                       to={item.path}
                       className="flex items-center py-2 px-4 rounded-md hover:bg-gray-100"
-                      onClick={() => setIsOpen(false)}
                     >
                       {item.icon}
                       {item.name}
                     </Link>
                   ))}
-                  <Button className="mt-4">
-                    <User className="h-4 w-4 mr-2" />
-                    Login
-                  </Button>
+                  
+                  {!isAuthenticated && (
+                    <Button 
+                      className="mt-4"
+                      onClick={() => navigate('/login')}
+                    >
+                      <LogIn className="h-4 w-4 mr-2" />
+                      Login
+                    </Button>
+                  )}
                 </div>
               </SheetContent>
             </Sheet>
