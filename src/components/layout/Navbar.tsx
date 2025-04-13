@@ -3,7 +3,8 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
-  Shield, AlertCircle, Map, Menu, Home, FileText, LogIn, UserPlus
+  Shield, AlertCircle, Map, Menu, Home, FileText, LogIn, UserPlus,
+  BadgeAlert, Users, Settings, BarChart3, ScrollText, ShieldAlert
 } from 'lucide-react';
 import {
   Sheet,
@@ -14,23 +15,51 @@ import { useAuth } from '@/contexts/AuthContext';
 import UserProfile from '@/components/auth/UserProfile';
 
 const Navbar = () => {
-  const { isAuthenticated, role } = useAuth();
+  const { isAuthenticated, role, permissions } = useAuth();
   const navigate = useNavigate();
   
-  const navItems = [
+  // Define base navigation items available to all users
+  const baseNavItems = [
     { name: 'Home', path: '/', icon: <Home className="h-5 w-5 mr-2" /> },
+  ];
+  
+  // Define role-specific navigation items
+  const userNavItems = [
     { name: 'Report Crime', path: '/report', icon: <FileText className="h-5 w-5 mr-2" /> },
     { name: 'Emergency', path: '/emergency', icon: <AlertCircle className="h-5 w-5 mr-2" /> },
     { name: 'Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> },
   ];
   
-  // Add dashboard link for officers and admins
-  if (role === 'officer' || role === 'admin') {
-    navItems.push({ 
-      name: 'Dashboard', 
-      path: '/dashboard', 
-      icon: <Shield className="h-5 w-5 mr-2" /> 
-    });
+  const officerNavItems = [
+    { name: 'Dashboard', path: '/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
+    { name: 'Incidents', path: '/incidents', icon: <BadgeAlert className="h-5 w-5 mr-2" /> },
+    { name: 'Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> },
+  ];
+  
+  const adminNavItems = [
+    { name: 'Dashboard', path: '/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
+    { name: 'Users', path: '/users', icon: <Users className="h-5 w-5 mr-2" /> },
+    { name: 'Reports', path: '/reports', icon: <ScrollText className="h-5 w-5 mr-2" /> },
+    { name: 'Analytics', path: '/analytics', icon: <BarChart3 className="h-5 w-5 mr-2" /> },
+    { name: 'Settings', path: '/settings', icon: <Settings className="h-5 w-5 mr-2" /> },
+  ];
+  
+  // Combine base items with role-specific items
+  let navItems = [...baseNavItems];
+  if (isAuthenticated) {
+    if (role === 'user') {
+      navItems = [...navItems, ...userNavItems];
+    } else if (role === 'officer') {
+      navItems = [...navItems, ...officerNavItems];
+    } else if (role === 'admin') {
+      navItems = [...navItems, ...adminNavItems];
+    }
+  } else {
+    // For non-authenticated users, show some public nav items
+    navItems = [...navItems, 
+      { name: 'Emergency', path: '/emergency', icon: <AlertCircle className="h-5 w-5 mr-2" /> },
+      { name: 'Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> }
+    ];
   }
 
   return (

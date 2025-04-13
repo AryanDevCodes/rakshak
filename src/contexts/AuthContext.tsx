@@ -13,27 +13,69 @@ export interface User {
   avatar?: string;
 }
 
+// Define permissions for each role
+export interface RolePermissions {
+  canViewDashboard: boolean;
+  canViewReports: boolean;
+  canManageUsers: boolean;
+  canApproveReports: boolean;
+  canEditAlerts: boolean;
+  canViewMap: boolean;
+}
+
 // Define auth context type
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   role: UserRole;
+  permissions: RolePermissions;
   login: (email: string, password: string, role: UserRole) => Promise<void>;
   register: (name: string, email: string, password: string, role: UserRole) => Promise<void>;
   logout: () => void;
   loading: boolean;
 }
 
-// Create context with default values
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  isAuthenticated: false,
-  role: null,
-  login: async () => {},
-  register: async () => {},
-  logout: () => {},
-  loading: true,
-});
+// Default permissions based on role
+const getRolePermissions = (role: UserRole): RolePermissions => {
+  switch (role) {
+    case 'admin':
+      return {
+        canViewDashboard: true,
+        canViewReports: true,
+        canManageUsers: true,
+        canApproveReports: true,
+        canEditAlerts: true,
+        canViewMap: true,
+      };
+    case 'officer':
+      return {
+        canViewDashboard: true,
+        canViewReports: true,
+        canManageUsers: false,
+        canApproveReports: true,
+        canEditAlerts: true,
+        canViewMap: true,
+      };
+    case 'user':
+      return {
+        canViewDashboard: false,
+        canViewReports: true,
+        canManageUsers: false,
+        canApproveReports: false,
+        canEditAlerts: false,
+        canViewMap: true,
+      };
+    default:
+      return {
+        canViewDashboard: false,
+        canViewReports: false,
+        canManageUsers: false,
+        canApproveReports: false,
+        canEditAlerts: false,
+        canViewMap: false,
+      };
+  }
+};
 
 // Sample user data for demo purposes
 const DEMO_USERS = {
@@ -138,10 +180,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem('safecity_user');
   };
 
+  // Get permissions based on user role
+  const permissions = getRolePermissions(user?.role || null);
+
   const value = {
     user,
     isAuthenticated: !!user,
     role: user?.role || null,
+    permissions,
     login,
     register,
     logout,

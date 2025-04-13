@@ -9,6 +9,8 @@ import ReportPage from "./pages/ReportPage";
 import EmergencyPage from "./pages/EmergencyPage";
 import MapPage from "./pages/MapPage";
 import DashboardPage from "./pages/DashboardPage";
+import UsersPage from "./pages/UsersPage";
+import AnalyticsPage from "./pages/AnalyticsPage";
 import NotFound from "./pages/NotFound";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
@@ -40,6 +42,15 @@ const App = () => {
             {/* Protected routes for officers and admins only */}
             <Route element={<ProtectedRoute allowedRoles={['officer', 'admin']} />}>
               <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/incidents" element={<DashboardPage />} />
+            </Route>
+            
+            {/* Protected routes for admins only */}
+            <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+              <Route path="/users" element={<UsersPage />} />
+              <Route path="/analytics" element={<AnalyticsPage />} />
+              <Route path="/reports" element={<DashboardPage />} />
+              <Route path="/settings" element={<DashboardPage />} />
             </Route>
             
             {/* Catch-all route */}

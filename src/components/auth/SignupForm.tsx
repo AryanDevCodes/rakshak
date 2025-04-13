@@ -35,9 +35,17 @@ const SignupForm = () => {
       // Use the registration function from auth context
       await register(values.name, values.email, values.password, selectedRole);
       
+      // Role-specific welcome messages
+      let welcomeMessage = "Welcome to SafeCity!";
+      if (selectedRole === 'admin') {
+        welcomeMessage = "Welcome to SafeCity Admin Portal!";
+      } else if (selectedRole === 'officer') {
+        welcomeMessage = "Welcome to SafeCity Officer Portal!";
+      }
+      
       toast({
         title: "Registration successful",
-        description: `Welcome to SafeCity!`,
+        description: welcomeMessage,
         variant: "default",
       });
       
@@ -60,12 +68,35 @@ const SignupForm = () => {
     }
   };
 
+  // Role-specific titles and descriptions
+  const getRoleSpecificContent = () => {
+    switch (selectedRole) {
+      case 'admin':
+        return {
+          title: "Create Admin Account",
+          description: "Register as an administrator to manage SafeCity platform"
+        };
+      case 'officer':
+        return {
+          title: "Create Officer Account",
+          description: "Register as a police officer to respond to incidents"
+        };
+      default:
+        return {
+          title: "Create Citizen Account",
+          description: "Register to report incidents and stay informed"
+        };
+    }
+  };
+
+  const roleContent = getRoleSpecificContent();
+
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold text-center">Create Account</CardTitle>
+        <CardTitle className="text-2xl font-bold text-center">{roleContent.title}</CardTitle>
         <CardDescription className="text-center">
-          Register a new account to use SafeCity services
+          {roleContent.description}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
