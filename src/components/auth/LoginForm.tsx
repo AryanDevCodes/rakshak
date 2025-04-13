@@ -1,20 +1,8 @@
 
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { UserRole, useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { useToast } from '@/hooks/use-toast';
 import {
   Card,
   CardContent,
@@ -23,23 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/tabs';
-import { Shield, User, UserCheck, Loader2 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
 
-// Form schema for validation
-const loginSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email address' }),
-  password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
-});
-
-// Type for form values
-type LoginFormValues = z.infer<typeof loginSchema>;
+import RoleSelector from './RoleSelector';
+import LoginFormFields, { LoginFormValues } from './LoginFormFields';
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -47,15 +21,12 @@ const LoginForm = () => {
   const { toast } = useToast();
   const [selectedRole, setSelectedRole] = useState<UserRole>('user');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [formRef, setFormRef] = useState<any>(null);
 
-  // Initialize form
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
+  // Handle role tab change
+  const handleRoleChange = (role: UserRole) => {
+    setSelectedRole(role);
+  };
 
   // Handle form submission
   const onSubmit = async (values: LoginFormValues) => {
@@ -88,29 +59,6 @@ const LoginForm = () => {
     }
   };
 
-  // Handle role tab change
-  const handleRoleChange = (value: string) => {
-    setSelectedRole(value as UserRole);
-    
-    // Pre-fill demo credentials based on role
-    let email = '';
-    
-    switch(value) {
-      case 'officer':
-        email = 'officer@police.gov';
-        break;
-      case 'admin':
-        email = 'admin@safecity.org';
-        break;
-      case 'user':
-      default:
-        email = 'john@example.com';
-    }
-    
-    form.setValue('email', email);
-    form.setValue('password', 'password123');
-  };
-
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader className="space-y-1">
@@ -120,81 +68,17 @@ const LoginForm = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Tabs defaultValue="user" onValueChange={handleRoleChange} className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="user" className="flex items-center justify-center gap-2">
-              <User className="h-4 w-4" />
-              <span>Citizen</span>
-            </TabsTrigger>
-            <TabsTrigger value="officer" className="flex items-center justify-center gap-2">
-              <Shield className="h-4 w-4" />
-              <span>Officer</span>
-            </TabsTrigger>
-            <TabsTrigger value="admin" className="flex items-center justify-center gap-2">
-              <UserCheck className="h-4 w-4" />
-              <span>Admin</span>
-            </TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="user">
-            <div className="p-4 bg-blue-50 rounded-md mb-4 text-sm">
-              Login as a citizen to report incidents and view crime data.
-            </div>
-          </TabsContent>
-          <TabsContent value="officer">
-            <div className="p-4 bg-blue-50 rounded-md mb-4 text-sm">
-              Login as a police officer to manage incidents and respond to reports.
-            </div>
-          </TabsContent>
-          <TabsContent value="admin">
-            <div className="p-4 bg-blue-50 rounded-md mb-4 text-sm">
-              Login as an administrator to manage the system and access all features.
-            </div>
-          </TabsContent>
-        </Tabs>
+        <RoleSelector 
+          selectedRole={selectedRole} 
+          onRoleChange={handleRoleChange} 
+        />
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter your email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="Enter your password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <Button type="submit" className="w-full bg-police-700 hover:bg-police-800" disabled={isLoggingIn}>
-              {isLoggingIn ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Logging in...
-                </>
-              ) : (
-                'Sign In'
-              )}
-            </Button>
-          </form>
-        </Form>
+        <LoginFormFields 
+          onSubmit={onSubmit} 
+          isLoggingIn={isLoggingIn} 
+          selectedRole={selectedRole}
+          setFormRef={setFormRef}
+        />
       </CardContent>
       <CardFooter className="flex justify-center border-t pt-4">
         <div className="text-sm text-muted-foreground">
