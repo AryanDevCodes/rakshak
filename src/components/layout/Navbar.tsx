@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
   Shield, AlertCircle, Map, Menu, Home, FileText, LogIn, UserPlus,
@@ -17,32 +17,34 @@ import UserProfile from '@/components/auth/UserProfile';
 const Navbar = () => {
   const { isAuthenticated, role, permissions } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   
   // Define base navigation items available to all users
   const baseNavItems = [
-    { name: 'Home', path: '/', icon: <Home className="h-5 w-5 mr-2" /> },
+    { name: 'मुख्य पृष्ठ (Home)', path: '/', icon: <Home className="h-5 w-5 mr-2" /> },
   ];
   
   // Define role-specific navigation items with Indian terminology
   const userNavItems = [
-    { name: 'Report Incident', path: '/report', icon: <FileText className="h-5 w-5 mr-2" /> },
-    { name: 'Emergency Help', path: '/emergency', icon: <AlertCircle className="h-5 w-5 mr-2" /> },
-    { name: 'Safety Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> },
+    { name: 'शिकायत दर्ज करें (Report)', path: '/report', icon: <FileText className="h-5 w-5 mr-2" /> },
+    { name: 'आपातकालीन सहायता (Emergency)', path: '/emergency', icon: <AlertCircle className="h-5 w-5 mr-2" /> },
+    { name: 'सुरक्षा मानचित्र (Safety Map)', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> },
   ];
   
   const officerNavItems = [
-    { name: 'Control Room', path: '/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
-    { name: 'Reports', path: '/incidents', icon: <BadgeAlert className="h-5 w-5 mr-2" /> },
-    { name: 'Case Files', path: '/cases', icon: <Briefcase className="h-5 w-5 mr-2" /> },
-    { name: 'Safety Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> },
+    { name: 'नियंत्रण कक्ष (Control Room)', path: '/officer/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
+    { name: 'अपराध रिपोर्ट (Reports)', path: '/incidents', icon: <BadgeAlert className="h-5 w-5 mr-2" /> },
+    { name: 'केस फाइल (Case Files)', path: '/officer/cases', icon: <Briefcase className="h-5 w-5 mr-2" /> },
+    { name: 'सुरक्षा मानचित्र (Safety Map)', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> },
   ];
   
   const adminNavItems = [
-    { name: 'Control Room', path: '/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
-    { name: 'Users', path: '/users', icon: <Users className="h-5 w-5 mr-2" /> },
-    { name: 'Reports', path: '/reports', icon: <ScrollText className="h-5 w-5 mr-2" /> },
-    { name: 'Analytics', path: '/analytics', icon: <BarChart3 className="h-5 w-5 mr-2" /> },
-    { name: 'Settings', path: '/settings', icon: <Settings className="h-5 w-5 mr-2" /> },
+    { name: 'प्रशासन कक्ष (Admin Room)', path: '/admin/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
+    { name: 'उपयोगकर्ता (Users)', path: '/users', icon: <Users className="h-5 w-5 mr-2" /> },
+    { name: 'सभी रिपोर्ट (All Reports)', path: '/reports', icon: <ScrollText className="h-5 w-5 mr-2" /> },
+    { name: 'केस प्रबंधन (Case Management)', path: '/admin/cases', icon: <Briefcase className="h-5 w-5 mr-2" /> },
+    { name: 'विश्लेषण (Analytics)', path: '/analytics', icon: <BarChart3 className="h-5 w-5 mr-2" /> },
+    { name: 'सेटिंग्स (Settings)', path: '/settings', icon: <Settings className="h-5 w-5 mr-2" /> },
   ];
   
   // Combine base items with role-specific items
@@ -58,10 +60,18 @@ const Navbar = () => {
   } else {
     // For non-authenticated users, show some public nav items
     navItems = [...navItems, 
-      { name: 'Emergency Help', path: '/emergency', icon: <AlertCircle className="h-5 w-5 mr-2" /> },
-      { name: 'Safety Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> }
+      { name: 'आपातकालीन सहायता (Emergency)', path: '/emergency', icon: <AlertCircle className="h-5 w-5 mr-2" /> },
+      { name: 'सुरक्षा मानचित्र (Safety Map)', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> }
     ];
   }
+
+  // Function to check if a link is active
+  const isActiveLink = (path: string) => {
+    if (path === '/') {
+      return location.pathname === '/';
+    }
+    return location.pathname.startsWith(path);
+  };
 
   return (
     <nav className="bg-orange-50 shadow-sm border-b border-amber-200 sticky top-0 z-50">
@@ -80,7 +90,11 @@ const Navbar = () => {
               <Link 
                 key={item.path} 
                 to={item.path} 
-                className="flex items-center text-amber-800 hover:text-orange-600 transition-colors"
+                className={`flex items-center transition-colors ${
+                  isActiveLink(item.path) 
+                    ? 'text-orange-600 font-semibold' 
+                    : 'text-amber-800 hover:text-orange-600'
+                }`}
               >
                 {item.name}
               </Link>
@@ -97,7 +111,7 @@ const Navbar = () => {
                   className="border-amber-600 text-amber-700 hover:bg-amber-50"
                 >
                   <LogIn className="h-4 w-4 mr-2" />
-                  Login
+                  लॉगिन (Login)
                 </Button>
                 <Button 
                   variant="default" 
@@ -106,7 +120,7 @@ const Navbar = () => {
                   onClick={() => navigate('/signup')}
                 >
                   <UserPlus className="h-4 w-4 mr-2" />
-                  Sign Up
+                  पंजीकरण (Sign Up)
                 </Button>
               </div>
             )}
@@ -151,7 +165,11 @@ const Navbar = () => {
                     <Link
                       key={item.path}
                       to={item.path}
-                      className="flex items-center py-2 px-4 rounded-md hover:bg-amber-100 text-amber-800"
+                      className={`flex items-center py-2 px-4 rounded-md hover:bg-amber-100 ${
+                        isActiveLink(item.path) 
+                          ? 'bg-amber-100 text-orange-600 font-semibold' 
+                          : 'text-amber-800'
+                      }`}
                     >
                       {item.icon}
                       {item.name}
@@ -166,14 +184,14 @@ const Navbar = () => {
                         variant="outline"
                       >
                         <LogIn className="h-4 w-4 mr-2" />
-                        Login
+                        लॉगिन (Login)
                       </Button>
                       <Button 
                         onClick={() => navigate('/signup')}
                         className="justify-start bg-orange-600 hover:bg-orange-700"
                       >
                         <UserPlus className="h-4 w-4 mr-2" />
-                        Sign Up
+                        पंजीकरण (Sign Up)
                       </Button>
                     </div>
                   )}

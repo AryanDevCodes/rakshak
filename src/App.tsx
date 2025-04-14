@@ -22,7 +22,7 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 const queryClient = new QueryClient();
 
 const App = () => {
-  console.log("App rendering for सुरक्षित नगर");
+  console.log("App rendering for सुरक्षित नगर - Surakshit Nagar");
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
@@ -43,18 +43,26 @@ const App = () => {
               <Route path="/settings" element={<SettingsPage />} />
             </Route>
             
-            {/* Protected routes for officers and admins only */}
-            <Route element={<ProtectedRoute allowedRoles={['officer', 'admin']} />}>
-              <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/incidents" element={<DashboardPage />} />
-              <Route path="/cases" element={<CasesPage />} />
+            {/* Protected routes for officers only */}
+            <Route element={<ProtectedRoute allowedRoles={['officer']} />}>
+              <Route path="/officer/dashboard" element={<DashboardPage />} />
+              <Route path="/officer/cases" element={<CasesPage />} />
             </Route>
             
             {/* Protected routes for admins only */}
             <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+              <Route path="/admin/dashboard" element={<DashboardPage />} />
               <Route path="/users" element={<UsersPage />} />
               <Route path="/analytics" element={<AnalyticsPage />} />
-              <Route path="/reports" element={<DashboardPage />} />
+              <Route path="/admin/cases" element={<CasesPage />} />
+            </Route>
+            
+            {/* Redirect old paths to new role-specific paths */}
+            <Route path="/dashboard" element={<ProtectedRoute allowedRoles={['officer', 'admin']} />}>
+              <Route index element={<DashboardPage />} />
+            </Route>
+            <Route path="/cases" element={<ProtectedRoute allowedRoles={['officer', 'admin']} />}>
+              <Route index element={<CasesPage />} />
             </Route>
             
             {/* Catch-all route */}
