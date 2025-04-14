@@ -3,7 +3,7 @@ import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/layout/Navbar';
 import OfficerDashboard from '@/components/dashboard/OfficerDashboard';
-import { Badge, Shield } from 'lucide-react'; 
+import { Shield } from 'lucide-react'; 
 
 const DashboardPage = () => {
   const { role } = useAuth();

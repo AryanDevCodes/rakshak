@@ -373,7 +373,7 @@ const OfficerDashboard = () => {
                 <SelectValue placeholder="प्राथमिकता" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">सभी प्राथमिकता</SelectItem>
+                <SelectItem value="all">सभी प्राथमिकता</SelectItem>
                 <SelectItem value="high">उच्च (High)</SelectItem>
                 <SelectItem value="medium">मध्यम (Medium)</SelectItem>
                 <SelectItem value="low">निम्न (Low)</SelectItem>
@@ -385,7 +385,7 @@ const OfficerDashboard = () => {
                 <SelectValue placeholder="जिला" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">सभी जिले</SelectItem>
+                <SelectItem value="all">सभी जिले</SelectItem>
                 {districts.map(district => (
                   <SelectItem key={district} value={district}>{district}</SelectItem>
                 ))}
