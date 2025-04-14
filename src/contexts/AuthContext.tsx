@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Define user roles
@@ -102,8 +101,8 @@ const DEMO_USERS = {
   }
 };
 
-// Create the auth context
-const AuthContext = createContext<AuthContextType>({
+// Create the auth context with a default value
+export const AuthContext = createContext<AuthContextType>({
   user: null,
   isAuthenticated: false,
   role: null,
