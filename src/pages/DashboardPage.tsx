@@ -3,7 +3,7 @@ import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/layout/Navbar';
 import OfficerDashboard from '@/components/dashboard/OfficerDashboard';
-import { PoliceBadge } from 'lucide-react'; 
+import { Badge, Shield } from 'lucide-react'; 
 
 const DashboardPage = () => {
   const { role } = useAuth();
@@ -21,7 +21,7 @@ const DashboardPage = () => {
       <Navbar />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6 flex items-center">
-          <PoliceBadge className="h-8 w-8 text-orange-700 mr-2" />
+          <Shield className="h-8 w-8 text-orange-700 mr-2" />
           <h1 className="text-2xl font-bold text-amber-900">{getDashboardTitle()}</h1>
         </div>
         <OfficerDashboard />
