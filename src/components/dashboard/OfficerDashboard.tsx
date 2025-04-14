@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -46,6 +47,7 @@ interface Report {
   details?: string;
 }
 
+// Updated mock reports with Indian locations and complainant names
 const mockReports: Report[] = [
   {
     id: 'FIR-2023-001',
@@ -109,7 +111,7 @@ const mockReports: Report[] = [
   },
   {
     id: 'FIR-2023-006',
-    type: '��ाइबर अपराध (Cybercrime)',
+    type: 'साइबर अपराध (Cybercrime)',
     location: 'गुड़गांव सेक्टर 14, हरियाणा',
     date: '2023-04-12T09:30:00Z',
     status: 'new',
@@ -184,8 +186,10 @@ const OfficerDashboard = () => {
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [showDetails, setShowDetails] = useState(false);
 
+  // Get unique districts from reports
   const districts = Array.from(new Set(mockReports.map(report => report.district)));
 
+  // Filter reports based on search, priority and district
   const filterReports = (reports: Report[]) => {
     return reports.filter(report => {
       const matchesSearch = searchQuery === "" || 
@@ -207,6 +211,7 @@ const OfficerDashboard = () => {
     if (action === "review" || action === "details") {
       setShowDetails(true);
     } else if (action === "update") {
+      // For update action, show details and allow editing
       setShowDetails(true);
     } else if (action === "assign") {
       toast({
@@ -243,6 +248,7 @@ const OfficerDashboard = () => {
     setDistrictFilter(null);
   };
 
+  // Calculate statistics
   const newReportsCount = mockReports.filter(r => r.status === 'new').length;
   const inProgressCount = mockReports.filter(r => r.status === 'in-progress').length;
   const resolvedCount = mockReports.filter(r => r.status === 'resolved').length;
@@ -271,6 +277,7 @@ const OfficerDashboard = () => {
         </div>
       </div>
 
+      {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="pb-2">
@@ -347,6 +354,7 @@ const OfficerDashboard = () => {
         </Card>
       </div>
 
+      {/* Main Content with Filters */}
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="relative flex-1 w-full sm:w-auto">
@@ -365,7 +373,7 @@ const OfficerDashboard = () => {
                 <SelectValue placeholder="प्राथमिकता" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">सभी प्राथमिकता</SelectItem>
+                <SelectItem value="">सभी प्राथमिकता</SelectItem>
                 <SelectItem value="high">उच्च (High)</SelectItem>
                 <SelectItem value="medium">मध्यम (Medium)</SelectItem>
                 <SelectItem value="low">निम्न (Low)</SelectItem>
@@ -377,7 +385,7 @@ const OfficerDashboard = () => {
                 <SelectValue placeholder="जिला" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">सभी जिले</SelectItem>
+                <SelectItem value="">सभी जिले</SelectItem>
                 {districts.map(district => (
                   <SelectItem key={district} value={district}>{district}</SelectItem>
                 ))}
@@ -429,6 +437,7 @@ const OfficerDashboard = () => {
             </TabsList>
           </div>
           
+          {/* New Reports Tab */}
           <TabsContent value="new" className="space-y-4">
             <Card>
               <CardHeader className="pb-3">
@@ -489,6 +498,7 @@ const OfficerDashboard = () => {
             </Card>
           </TabsContent>
           
+          {/* In Progress Tab */}
           <TabsContent value="in-progress" className="space-y-4">
             <Card>
               <CardHeader>
@@ -549,6 +559,7 @@ const OfficerDashboard = () => {
             </Card>
           </TabsContent>
           
+          {/* Resolved Tab */}
           <TabsContent value="resolved" className="space-y-4">
             <Card>
               <CardHeader>
@@ -606,6 +617,7 @@ const OfficerDashboard = () => {
         </Tabs>
       </div>
 
+      {/* Case Detail Dialog */}
       {showDetails && selectedReport && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
