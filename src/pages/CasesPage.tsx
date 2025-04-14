@@ -25,7 +25,7 @@ const CasesPage = () => {
           <div className="bg-white p-6 rounded-lg border border-amber-200 shadow-sm">
             <div className="mb-4">
               <p className="text-amber-800">
-                केस प्रबंधन प्रणाली में आपका स्वागत है। यहां आप सभी रिपोर्ट की गई घटनाओं को ट्रैक कर सकते हैं और विभिन्न स्थानों में जांच का प्रबंधन कर सकते हैं।
+                Case management system welcomes you. Here you can track all reported incidents and manage investigations across different locations.
               </p>
             </div>
             <CaseManagement />

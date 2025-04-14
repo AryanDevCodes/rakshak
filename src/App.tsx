@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import CasesPage from "./pages/CasesPage";
+import IncidentsPage from "./pages/IncidentsPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 // Create a new QueryClient instance
@@ -47,6 +48,7 @@ const App = () => {
             <Route element={<ProtectedRoute allowedRoles={['officer']} />}>
               <Route path="/officer/dashboard" element={<DashboardPage />} />
               <Route path="/officer/cases" element={<CasesPage />} />
+              <Route path="/officer/incidents" element={<IncidentsPage />} />
             </Route>
             
             {/* Protected routes for admins only */}
@@ -55,6 +57,7 @@ const App = () => {
               <Route path="/users" element={<UsersPage />} />
               <Route path="/analytics" element={<AnalyticsPage />} />
               <Route path="/admin/cases" element={<CasesPage />} />
+              <Route path="/admin/incidents" element={<IncidentsPage />} />
             </Route>
             
             {/* Redirect old paths to new role-specific paths */}
@@ -63,6 +66,9 @@ const App = () => {
             </Route>
             <Route path="/cases" element={<ProtectedRoute allowedRoles={['officer', 'admin']} />}>
               <Route index element={<CasesPage />} />
+            </Route>
+            <Route path="/incidents" element={<ProtectedRoute allowedRoles={['officer', 'admin']} />}>
+              <Route index element={<IncidentsPage />} />
             </Route>
             
             {/* Catch-all route */}

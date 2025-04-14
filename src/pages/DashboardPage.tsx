@@ -11,9 +11,9 @@ const DashboardPage = () => {
   // Determine dashboard title based on user role
   const getDashboardTitle = () => {
     if (role === 'admin') {
-      return "प्रशासन नियंत्रण कक्ष (Administrative Control Room)";
+      return "Administrative Control Room";
     }
-    return "अधिकारी नियंत्रण कक्ष (Officer Control Room)";
+    return "Officer Control Room";
   };
 
   return (
