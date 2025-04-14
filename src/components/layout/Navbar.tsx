@@ -23,22 +23,22 @@ const Navbar = () => {
     { name: 'Home', path: '/', icon: <Home className="h-5 w-5 mr-2" /> },
   ];
   
-  // Define role-specific navigation items
+  // Define role-specific navigation items with Indian terminology
   const userNavItems = [
-    { name: 'Report Crime', path: '/report', icon: <FileText className="h-5 w-5 mr-2" /> },
-    { name: 'Emergency', path: '/emergency', icon: <AlertCircle className="h-5 w-5 mr-2" /> },
-    { name: 'Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> },
+    { name: 'Report Incident', path: '/report', icon: <FileText className="h-5 w-5 mr-2" /> },
+    { name: 'Emergency Help', path: '/emergency', icon: <AlertCircle className="h-5 w-5 mr-2" /> },
+    { name: 'Safety Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> },
   ];
   
   const officerNavItems = [
-    { name: 'Dashboard', path: '/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
-    { name: 'Incidents', path: '/incidents', icon: <BadgeAlert className="h-5 w-5 mr-2" /> },
-    { name: 'Cases', path: '/cases', icon: <Briefcase className="h-5 w-5 mr-2" /> },
-    { name: 'Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> },
+    { name: 'Control Room', path: '/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
+    { name: 'Reports', path: '/incidents', icon: <BadgeAlert className="h-5 w-5 mr-2" /> },
+    { name: 'Case Files', path: '/cases', icon: <Briefcase className="h-5 w-5 mr-2" /> },
+    { name: 'Safety Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> },
   ];
   
   const adminNavItems = [
-    { name: 'Dashboard', path: '/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
+    { name: 'Control Room', path: '/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
     { name: 'Users', path: '/users', icon: <Users className="h-5 w-5 mr-2" /> },
     { name: 'Reports', path: '/reports', icon: <ScrollText className="h-5 w-5 mr-2" /> },
     { name: 'Analytics', path: '/analytics', icon: <BarChart3 className="h-5 w-5 mr-2" /> },
@@ -58,19 +58,19 @@ const Navbar = () => {
   } else {
     // For non-authenticated users, show some public nav items
     navItems = [...navItems, 
-      { name: 'Emergency', path: '/emergency', icon: <AlertCircle className="h-5 w-5 mr-2" /> },
-      { name: 'Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> }
+      { name: 'Emergency Help', path: '/emergency', icon: <AlertCircle className="h-5 w-5 mr-2" /> },
+      { name: 'Safety Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> }
     ];
   }
 
   return (
-    <nav className="bg-white shadow-sm border-b sticky top-0 z-50">
+    <nav className="bg-orange-50 shadow-sm border-b border-amber-200 sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Link to="/" className="flex items-center space-x-2">
-              <Shield className="h-8 w-8 text-police-700" />
-              <span className="text-xl font-bold text-police-700">SafeCity</span>
+              <Shield className="h-8 w-8 text-orange-600" />
+              <span className="text-xl font-bold text-orange-800">सुरक्षित नगर</span>
             </Link>
           </div>
 
@@ -80,7 +80,7 @@ const Navbar = () => {
               <Link 
                 key={item.path} 
                 to={item.path} 
-                className="flex items-center text-gray-700 hover:text-police-700 transition-colors"
+                className="flex items-center text-amber-800 hover:text-orange-600 transition-colors"
               >
                 {item.name}
               </Link>
@@ -94,6 +94,7 @@ const Navbar = () => {
                   variant="outline" 
                   size="sm"
                   onClick={() => navigate('/login')}
+                  className="border-amber-600 text-amber-700 hover:bg-amber-50"
                 >
                   <LogIn className="h-4 w-4 mr-2" />
                   Login
@@ -101,7 +102,7 @@ const Navbar = () => {
                 <Button 
                   variant="default" 
                   size="sm"
-                  className="bg-police-700 hover:bg-police-800"
+                  className="bg-orange-600 hover:bg-orange-700"
                   onClick={() => navigate('/signup')}
                 >
                   <UserPlus className="h-4 w-4 mr-2" />
@@ -122,7 +123,7 @@ const Navbar = () => {
                 <Button 
                   variant="ghost" 
                   size="sm"
-                  className="px-1"
+                  className="px-1 text-amber-700"
                   onClick={() => navigate('/login')}
                 >
                   <LogIn className="h-4 w-4" />
@@ -130,7 +131,7 @@ const Navbar = () => {
                 <Button 
                   variant="ghost" 
                   size="sm"
-                  className="px-1"
+                  className="px-1 text-amber-700"
                   onClick={() => navigate('/signup')}
                 >
                   <UserPlus className="h-4 w-4" />
@@ -140,17 +141,17 @@ const Navbar = () => {
             
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" className="text-amber-700">
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent>
+              <SheetContent className="bg-orange-50 border-l border-amber-200">
                 <div className="flex flex-col space-y-4 mt-8">
                   {navItems.map((item) => (
                     <Link
                       key={item.path}
                       to={item.path}
-                      className="flex items-center py-2 px-4 rounded-md hover:bg-gray-100"
+                      className="flex items-center py-2 px-4 rounded-md hover:bg-amber-100 text-amber-800"
                     >
                       {item.icon}
                       {item.name}
@@ -161,7 +162,7 @@ const Navbar = () => {
                     <div className="flex flex-col space-y-2 mt-4">
                       <Button 
                         onClick={() => navigate('/login')}
-                        className="justify-start"
+                        className="justify-start border-amber-600 text-amber-700 hover:bg-amber-50"
                         variant="outline"
                       >
                         <LogIn className="h-4 w-4 mr-2" />
@@ -169,7 +170,7 @@ const Navbar = () => {
                       </Button>
                       <Button 
                         onClick={() => navigate('/signup')}
-                        className="justify-start bg-police-700"
+                        className="justify-start bg-orange-600 hover:bg-orange-700"
                       >
                         <UserPlus className="h-4 w-4 mr-2" />
                         Sign Up

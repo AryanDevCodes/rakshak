@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
       <Navbar />
       
       <div className="container px-4 py-8 mx-auto">
@@ -19,17 +19,17 @@ const Index = () => {
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="space-y-6">
               <div>
-                <h1 className="text-4xl font-bold tracking-tight mb-3">
-                  Help make our city safer, together.
+                <h1 className="text-4xl font-bold tracking-tight mb-3 text-amber-900">
+                  सुरक्षित नगर - Together for a Safer India
                 </h1>
-                <p className="text-lg text-muted-foreground max-w-md">
-                  Easy reporting, real-time alerts, and community safety in one place.
+                <p className="text-lg text-amber-800 max-w-md">
+                  Join our community effort to make our cities safer through easy reporting, real-time alerts, and local vigilance.
                 </p>
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button 
-                  className="bg-police-700 hover:bg-police-800"
+                  className="bg-orange-600 hover:bg-orange-700"
                   size="lg"
                   asChild
                 >
@@ -39,18 +39,18 @@ const Index = () => {
                   </Link>
                 </Button>
                 
-                <Button variant="outline" size="lg" asChild>
+                <Button variant="outline" size="lg" asChild className="border-amber-600 text-amber-700 hover:bg-amber-50">
                   <Link to="/map">
                     <MapPin className="mr-2 h-5 w-5" />
-                    View Crime Map
+                    View Safety Map
                   </Link>
                 </Button>
               </div>
             </div>
-            <div className="rounded-xl overflow-hidden shadow-lg border border-gray-100">
+            <div className="rounded-xl overflow-hidden shadow-lg border border-amber-200">
               <img 
-                src="https://images.unsplash.com/photo-1529485726363-95c8d62f656f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                alt="Safe city"
+                src="https://images.unsplash.com/photo-1524294040232-31fd4a68b249?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                alt="Safe neighborhood in India"
                 className="w-full h-64 object-cover object-center"
               />
             </div>
@@ -65,7 +65,7 @@ const Index = () => {
         {/* Statistics */}
         <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <CrimeStatCard 
-            title="Incidents This Month" 
+            title="Monthly Incidents" 
             value="142" 
             trend="down" 
             trendValue="8%" 
@@ -86,7 +86,7 @@ const Index = () => {
             trend="up" 
             trendValue="2" 
             icon="alert"
-            description="Within 5 mile radius"
+            description="Within 5 km radius"
           />
           <CrimeStatCard 
             title="Case Resolution" 
@@ -100,43 +100,43 @@ const Index = () => {
         
         {/* Features Grid */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-6">How It Works</h2>
+          <h2 className="text-2xl font-bold mb-6 text-amber-900">How It Works</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="border rounded-lg p-6 bg-white">
-              <div className="bg-blue-100 p-3 rounded-full w-12 h-12 mb-4 flex items-center justify-center">
-                <FileText className="h-6 w-6 text-police-600" />
+            <div className="border border-amber-200 rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-orange-100 p-3 rounded-full w-12 h-12 mb-4 flex items-center justify-center">
+                <FileText className="h-6 w-6 text-orange-600" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">Report Incidents</h3>
-              <p className="text-muted-foreground mb-4">
+              <h3 className="text-lg font-semibold mb-2 text-amber-900">Report Incidents</h3>
+              <p className="text-amber-800 mb-4">
                 Easily submit reports about crimes or suspicious activities with location and photos.
               </p>
-              <Link to="/report" className="text-police-600 font-medium text-sm flex items-center hover:text-police-700">
+              <Link to="/report" className="text-orange-600 font-medium text-sm flex items-center hover:text-orange-700">
                 Report Now <ArrowRight className="ml-1 h-4 w-4" />
               </Link>
             </div>
             
-            <div className="border rounded-lg p-6 bg-white">
+            <div className="border border-amber-200 rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
               <div className="bg-red-100 p-3 rounded-full w-12 h-12 mb-4 flex items-center justify-center">
-                <Bell className="h-6 w-6 text-emergency-600" />
+                <Bell className="h-6 w-6 text-red-600" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">Get Alerts</h3>
-              <p className="text-muted-foreground mb-4">
+              <h3 className="text-lg font-semibold mb-2 text-amber-900">Get Alerts</h3>
+              <p className="text-amber-800 mb-4">
                 Receive real-time notifications about incidents in your neighborhood or areas you care about.
               </p>
-              <span className="text-police-600 font-medium text-sm flex items-center">
+              <span className="text-orange-600 font-medium text-sm flex items-center">
                 View Recent Alerts <ArrowRight className="ml-1 h-4 w-4" />
               </span>
             </div>
             
-            <div className="border rounded-lg p-6 bg-white">
-              <div className="bg-blue-100 p-3 rounded-full w-12 h-12 mb-4 flex items-center justify-center">
-                <Shield className="h-6 w-6 text-police-600" />
+            <div className="border border-amber-200 rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-orange-100 p-3 rounded-full w-12 h-12 mb-4 flex items-center justify-center">
+                <Shield className="h-6 w-6 text-orange-600" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">Track Progress</h3>
-              <p className="text-muted-foreground mb-4">
-                Follow up on your reports and see how law enforcement is addressing community concerns.
+              <h3 className="text-lg font-semibold mb-2 text-amber-900">Track Progress</h3>
+              <p className="text-amber-800 mb-4">
+                Follow up on your reports and see how local authorities are addressing community concerns.
               </p>
-              <Link to="/dashboard" className="text-police-600 font-medium text-sm flex items-center hover:text-police-700">
+              <Link to="/dashboard" className="text-orange-600 font-medium text-sm flex items-center hover:text-orange-700">
                 View Dashboard <ArrowRight className="ml-1 h-4 w-4" />
               </Link>
             </div>
@@ -145,21 +145,21 @@ const Index = () => {
         
         {/* Recent Alerts Section */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-6">Recent Alerts</h2>
+          <h2 className="text-2xl font-bold mb-6 text-amber-900">Recent Alerts</h2>
           <RecentAlerts />
         </div>
 
         {/* CTA Section */}
-        <div className="rounded-xl overflow-hidden police-gradient text-white p-8 md:p-12">
+        <div className="rounded-xl overflow-hidden bg-gradient-to-r from-orange-600 to-amber-600 text-white p-8 md:p-12">
           <div className="md:max-w-md space-y-4">
             <h2 className="text-2xl md:text-3xl font-bold">
-              Join community safety efforts
+              Join Surakshit Nagrik initiative
             </h2>
             <p className="opacity-90">
-              Be part of making our neighborhoods safer. Report incidents, stay informed, and help your community.
+              Be part of making our mohallas safer. Report incidents, stay informed, and help your community thrive together.
             </p>
             <div className="pt-4">
-              <Button variant="secondary" size="lg">
+              <Button variant="secondary" size="lg" className="bg-white text-amber-900 hover:bg-amber-100">
                 Get Started
               </Button>
             </div>
@@ -167,17 +167,17 @@ const Index = () => {
         </div>
       </div>
       
-      <footer className="bg-gray-100 py-8 mt-12">
+      <footer className="bg-amber-100 py-8 mt-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center mb-4 md:mb-0">
-              <Shield className="h-6 w-6 text-police-700 mr-2" />
-              <span className="text-lg font-semibold text-police-700">SafeCity</span>
+              <Shield className="h-6 w-6 text-orange-600 mr-2" />
+              <span className="text-lg font-semibold text-orange-800">सुरक्षित नगर</span>
             </div>
-            <div className="text-sm text-muted-foreground">
-              © 2025 SafeCity. All rights reserved. <span className="mx-2">·</span> 
-              <a href="#" className="hover:text-police-700">Privacy Policy</a> <span className="mx-2">·</span> 
-              <a href="#" className="hover:text-police-700">Terms of Service</a>
+            <div className="text-sm text-amber-700">
+              © 2025 सुरक्षित नगर. All rights reserved. <span className="mx-2">·</span> 
+              <a href="#" className="hover:text-orange-700">Privacy Policy</a> <span className="mx-2">·</span> 
+              <a href="#" className="hover:text-orange-700">Terms of Service</a>
             </div>
           </div>
         </div>
