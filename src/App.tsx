@@ -11,6 +11,7 @@ import MapPage from "./pages/MapPage";
 import DashboardPage from "./pages/DashboardPage";
 import UsersPage from "./pages/UsersPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
+import SettingsPage from "./pages/SettingsPage";
 import NotFound from "./pages/NotFound";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
@@ -37,6 +38,7 @@ const App = () => {
             {/* Protected routes for authenticated users */}
             <Route element={<ProtectedRoute allowedRoles={['user', 'officer', 'admin']} />}>
               <Route path="/report" element={<ReportPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
             </Route>
             
             {/* Protected routes for officers and admins only */}
@@ -50,7 +52,6 @@ const App = () => {
               <Route path="/users" element={<UsersPage />} />
               <Route path="/analytics" element={<AnalyticsPage />} />
               <Route path="/reports" element={<DashboardPage />} />
-              <Route path="/settings" element={<DashboardPage />} />
             </Route>
             
             {/* Catch-all route */}

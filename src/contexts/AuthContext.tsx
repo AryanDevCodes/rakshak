@@ -102,6 +102,18 @@ const DEMO_USERS = {
   }
 };
 
+// Create the auth context
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  isAuthenticated: false,
+  role: null,
+  permissions: getRolePermissions(null),
+  login: async () => {},
+  register: async () => {},
+  logout: () => {},
+  loading: false
+});
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
