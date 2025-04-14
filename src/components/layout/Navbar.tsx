@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
   Shield, AlertCircle, Map, Menu, Home, FileText, LogIn, UserPlus,
-  BadgeAlert, Users, Settings, BarChart3, ScrollText, ShieldAlert
+  BadgeAlert, Users, Settings, BarChart3, ScrollText, ShieldAlert, Briefcase
 } from 'lucide-react';
 import {
   Sheet,
@@ -33,6 +33,7 @@ const Navbar = () => {
   const officerNavItems = [
     { name: 'Dashboard', path: '/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
     { name: 'Incidents', path: '/incidents', icon: <BadgeAlert className="h-5 w-5 mr-2" /> },
+    { name: 'Cases', path: '/cases', icon: <Briefcase className="h-5 w-5 mr-2" /> },
     { name: 'Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> },
   ];
   

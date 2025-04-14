@@ -15,6 +15,7 @@ import SettingsPage from "./pages/SettingsPage";
 import NotFound from "./pages/NotFound";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import CasesPage from "./pages/CasesPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 // Create a new QueryClient instance
@@ -46,6 +47,7 @@ const App = () => {
             <Route element={<ProtectedRoute allowedRoles={['officer', 'admin']} />}>
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/incidents" element={<DashboardPage />} />
+              <Route path="/cases" element={<CasesPage />} />
             </Route>
             
             {/* Protected routes for admins only */}
