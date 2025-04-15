@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -30,15 +31,16 @@ const Navbar = () => {
   
   const officerNavItems = [
     { name: 'Control Room', path: '/officer/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
-    { name: 'Incident Reports', path: '/incidents', icon: <BadgeAlert className="h-5 w-5 mr-2" /> },
+    { name: 'Incident Reports', path: '/officer/incidents', icon: <BadgeAlert className="h-5 w-5 mr-2" /> },
     { name: 'Case Files', path: '/officer/cases', icon: <Briefcase className="h-5 w-5 mr-2" /> },
+    { name: 'Reports', path: '/officer/reports', icon: <ScrollText className="h-5 w-5 mr-2" /> },
     { name: 'Safety Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> },
   ];
   
   const adminNavItems = [
     { name: 'Admin Room', path: '/admin/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
     { name: 'Users', path: '/users', icon: <Users className="h-5 w-5 mr-2" /> },
-    { name: 'All Reports', path: '/reports', icon: <ScrollText className="h-5 w-5 mr-2" /> },
+    { name: 'Reports', path: '/reports', icon: <ScrollText className="h-5 w-5 mr-2" /> },
     { name: 'Case Management', path: '/admin/cases', icon: <Briefcase className="h-5 w-5 mr-2" /> },
     { name: 'Analytics', path: '/analytics', icon: <BarChart3 className="h-5 w-5 mr-2" /> },
     { name: 'Settings', path: '/settings', icon: <Settings className="h-5 w-5 mr-2" /> },
@@ -74,7 +76,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-2">
             <Link to="/" className="flex items-center space-x-2">
               <Shield className="h-8 w-8 text-orange-600" />
-              <span className="text-xl font-bold text-orange-800">सुरक्षित नगर</span>
+              <span className="text-xl font-bold text-orange-800">Safe City</span>
             </Link>
           </div>
 
@@ -104,7 +106,7 @@ const Navbar = () => {
                   className="border-amber-600 text-amber-700 hover:bg-amber-50"
                 >
                   <LogIn className="h-4 w-4 mr-2" />
-                  लॉगिन (Login)
+                  Login
                 </Button>
                 <Button 
                   variant="default" 
@@ -113,7 +115,7 @@ const Navbar = () => {
                   onClick={() => navigate('/signup')}
                 >
                   <UserPlus className="h-4 w-4 mr-2" />
-                  पंजीकरण (Sign Up)
+                  Sign Up
                 </Button>
               </div>
             )}
@@ -176,14 +178,14 @@ const Navbar = () => {
                         variant="outline"
                       >
                         <LogIn className="h-4 w-4 mr-2" />
-                        लॉगिन (Login)
+                        Login
                       </Button>
                       <Button 
                         onClick={() => navigate('/signup')}
                         className="justify-start bg-orange-600 hover:bg-orange-700"
                       >
                         <UserPlus className="h-4 w-4 mr-2" />
-                        पंजीकरण (Sign Up)
+                        Sign Up
                       </Button>
                     </div>
                   )}

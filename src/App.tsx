@@ -17,13 +17,14 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import CasesPage from "./pages/CasesPage";
 import IncidentsPage from "./pages/IncidentsPage";
+import ReportsPage from "./pages/ReportsPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 // Create a new QueryClient instance
 const queryClient = new QueryClient();
 
 const App = () => {
-  console.log("App rendering for सुरक्षित नगर - Surakshit Nagar");
+  console.log("App rendering for Surakshit Nagar - Safe City");
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
@@ -49,6 +50,7 @@ const App = () => {
               <Route path="/officer/dashboard" element={<DashboardPage />} />
               <Route path="/officer/cases" element={<CasesPage />} />
               <Route path="/officer/incidents" element={<IncidentsPage />} />
+              <Route path="/officer/reports" element={<ReportsPage />} />
             </Route>
             
             {/* Protected routes for admins only */}
@@ -58,6 +60,8 @@ const App = () => {
               <Route path="/analytics" element={<AnalyticsPage />} />
               <Route path="/admin/cases" element={<CasesPage />} />
               <Route path="/admin/incidents" element={<IncidentsPage />} />
+              <Route path="/admin/reports" element={<ReportsPage />} />
+              <Route path="/reports" element={<ReportsPage />} />
             </Route>
             
             {/* Redirect old paths to new role-specific paths */}
