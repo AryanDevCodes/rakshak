@@ -53,7 +53,7 @@ const App = () => {
               <Route path="/settings" element={<SettingsPage />} />
             </Route>
             
-            {/* Protected routes for officers only */}
+            {/* Protected routes for officers */}
             <Route element={<ProtectedRoute allowedRoles={['officer']} />}>
               <Route path="/officer/dashboard" element={<DashboardPage />} />
               <Route path="/officer/cases" element={<CasesPage />} />
@@ -61,32 +61,26 @@ const App = () => {
               <Route path="/officer/reports" element={<ReportsPage />} />
             </Route>
             
-            {/* Protected routes for admins only */}
+            {/* Protected routes for admins */}
             <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
               <Route path="/admin/dashboard" element={<DashboardPage />} />
-              <Route path="/users" element={<UsersPage />} />
-              <Route path="/analytics" element={<AnalyticsPage />} />
               <Route path="/admin/cases" element={<CasesPage />} />
               <Route path="/admin/incidents" element={<IncidentsPage />} />
               <Route path="/admin/reports" element={<ReportsPage />} />
+              <Route path="/users" element={<UsersPage />} />
+              <Route path="/analytics" element={<AnalyticsPage />} />
               <Route path="/reports" element={<ReportsPage />} />
             </Route>
             
             {/* Redirect old paths to new role-specific paths */}
             <Route path="/dashboard" element={
-              <ProtectedRoute allowedRoles={['officer', 'admin']}>
-                <Navigate to="/officer/dashboard" replace />
-              </ProtectedRoute>
+              <Navigate to="/officer/dashboard" replace />
             } />
             <Route path="/cases" element={
-              <ProtectedRoute allowedRoles={['officer', 'admin']}>
-                <Navigate to="/officer/cases" replace />
-              </ProtectedRoute>
+              <Navigate to="/officer/cases" replace />
             } />
             <Route path="/incidents" element={
-              <ProtectedRoute allowedRoles={['officer', 'admin']}>
-                <Navigate to="/officer/incidents" replace />
-              </ProtectedRoute>
+              <Navigate to="/officer/incidents" replace />
             } />
             
             {/* Catch-all route */}

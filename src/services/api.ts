@@ -1,5 +1,6 @@
 
 import axios from 'axios';
+import { toast } from '@/hooks/use-toast';
 
 // Base API configuration
 const API_BASE_URL = 'http://localhost:8080/api';
@@ -26,23 +27,88 @@ apiClient.interceptors.request.use(
   }
 );
 
+// Add a response interceptor for error handling
+apiClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    console.error('API Error:', error);
+    
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      if (error.response.status === 401) {
+        // Unauthorized - clear token and redirect to login
+        localStorage.removeItem('safecity_token');
+        window.location.href = '/login';
+        
+        toast({
+          title: "Session expired",
+          description: "Please log in again to continue.",
+          variant: "destructive",
+        });
+      } else if (error.response.status === 403) {
+        // Forbidden
+        toast({
+          title: "Access denied",
+          description: "You don't have permission to perform this action.",
+          variant: "destructive",
+        });
+      } else if (error.response.data && error.response.data.message) {
+        // Server provided error message
+        toast({
+          title: "Error",
+          description: error.response.data.message,
+          variant: "destructive",
+        });
+      }
+    } else if (error.request) {
+      // The request was made but no response was received
+      toast({
+        title: "Network error",
+        description: "Unable to connect to the server. Please check your internet connection.",
+        variant: "destructive",
+      });
+    } else {
+      // Something happened in setting up the request
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred.",
+        variant: "destructive",
+      });
+    }
+    
+    return Promise.reject(error);
+  }
+);
+
 // Auth Services
 export const authService = {
   login: async (email: string, password: string) => {
-    const response = await apiClient.post('/auth/login', { email, password });
+    const response = await apiClient.post('/auth/signin', { email, password });
     if (response.data.token) {
       localStorage.setItem('safecity_token', response.data.token);
+      localStorage.setItem('safecity_user', JSON.stringify({
+        id: response.data.id,
+        name: response.data.name,
+        email: response.data.email,
+        role: response.data.roles.find((role: string) => role.startsWith('ROLE_')).replace('ROLE_', '').toLowerCase(),
+        avatar: null,
+        badge: response.data.badge
+      }));
     }
     return response.data;
   },
   
   register: async (name: string, email: string, password: string, role: string) => {
-    const response = await apiClient.post('/auth/register', { name, email, password, role });
+    const response = await apiClient.post('/auth/signup', { name, email, password, role });
     return response.data;
   },
   
   logout: () => {
     localStorage.removeItem('safecity_token');
+    localStorage.removeItem('safecity_user');
   },
   
   getCurrentUser: async () => {
