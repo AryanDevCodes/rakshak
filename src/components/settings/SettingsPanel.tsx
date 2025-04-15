@@ -11,6 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import ProfileSettings from './ProfileSettings';
 import NotificationSettings from './NotificationSettings';
 import { useToast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button';
 
 const SettingsPanel = () => {
   const { user, role } = useAuth();
@@ -20,6 +21,27 @@ const SettingsPanel = () => {
     toast({
       title: "Settings updated",
       description: "Your changes have been saved successfully.",
+    });
+  };
+  
+  const handleDarkModeToggle = () => {
+    toast({
+      title: "Dark Mode Setting Changed",
+      description: "Your theme preference has been updated.",
+    });
+  };
+  
+  const handleColorThemeChange = (value: string) => {
+    toast({
+      title: "Color Theme Changed",
+      description: `Your color theme has been updated to ${value}.`,
+    });
+  };
+  
+  const handleExportData = () => {
+    toast({
+      title: "Exporting User Data",
+      description: "Your data is being prepared for download.",
     });
   };
 
@@ -60,6 +82,26 @@ const SettingsPanel = () => {
         <TabsContent value="profile" className="p-6">
           <h2 className="text-xl font-semibold mb-4">Profile Settings</h2>
           <ProfileSettings user={user} onSave={handleSettingSaved} />
+          
+          <div className="mt-8">
+            <Card>
+              <CardHeader>
+                <CardTitle>Data Privacy</CardTitle>
+                <CardDescription>
+                  Manage your personal data
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button 
+                  variant="outline" 
+                  onClick={handleExportData}
+                  className="w-full sm:w-auto"
+                >
+                  Export My Data
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
         
         <TabsContent value="notifications" className="p-6">
@@ -74,7 +116,7 @@ const SettingsPanel = () => {
             <CardHeader>
               <CardTitle>Theme Preferences</CardTitle>
               <CardDescription>
-                Customize how SafeCity looks for you
+                Customize how Safe City looks for you
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -84,12 +126,16 @@ const SettingsPanel = () => {
                     <Moon className="h-4 w-4" />
                     <Label htmlFor="dark-mode">Dark Mode</Label>
                   </div>
-                  <Switch id="dark-mode" />
+                  <Switch id="dark-mode" onCheckedChange={handleDarkModeToggle} />
                 </div>
                 
                 <div className="space-y-3">
                   <Label>Color Theme</Label>
-                  <RadioGroup defaultValue="blue" className="flex flex-col space-y-3">
+                  <RadioGroup 
+                    defaultValue="blue" 
+                    className="flex flex-col space-y-3"
+                    onValueChange={handleColorThemeChange}
+                  >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="blue" id="blue" />
                       <Label htmlFor="blue" className="flex items-center">
@@ -102,6 +148,13 @@ const SettingsPanel = () => {
                       <Label htmlFor="green" className="flex items-center">
                         <div className="w-4 h-4 rounded-full bg-green-700 mr-2"></div>
                         Green
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="amber" id="amber" />
+                      <Label htmlFor="amber" className="flex items-center">
+                        <div className="w-4 h-4 rounded-full bg-amber-700 mr-2"></div>
+                        Amber
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -136,7 +189,7 @@ const SettingsPanel = () => {
                     <div className="flex items-center space-x-2">
                       <Label htmlFor="two-factor">Two-factor Authentication</Label>
                     </div>
-                    <Switch id="two-factor" />
+                    <Switch id="two-factor" onCheckedChange={() => handleSettingSaved()} />
                   </div>
                   
                   <Separator />
@@ -145,7 +198,38 @@ const SettingsPanel = () => {
                     <div className="flex items-center space-x-2">
                       <Label htmlFor="session-timeout">Auto-logout after inactivity</Label>
                     </div>
-                    <Switch id="session-timeout" defaultChecked />
+                    <Switch id="session-timeout" defaultChecked onCheckedChange={() => handleSettingSaved()} />
+                  </div>
+                  
+                  <Separator />
+                  
+                  <div className="space-y-3">
+                    <Label>Session Timeout Duration</Label>
+                    <select 
+                      id="timeout-duration" 
+                      onChange={() => handleSettingSaved()}
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <option value="5">5 minutes</option>
+                      <option value="15">15 minutes</option>
+                      <option value="30">30 minutes</option>
+                      <option value="60">1 hour</option>
+                    </select>
+                  </div>
+                  
+                  <div className="pt-4">
+                    <Button 
+                      variant="outline" 
+                      className="w-full sm:w-auto bg-orange-50 hover:bg-orange-100"
+                      onClick={() => {
+                        toast({
+                          title: "Security Log Retrieved",
+                          description: "Your recent account activities have been fetched.",
+                        });
+                      }}
+                    >
+                      View Security Log
+                    </Button>
                   </div>
                 </div>
               </CardContent>
@@ -162,7 +246,7 @@ const SettingsPanel = () => {
               <CardHeader>
                 <CardTitle>Application Settings</CardTitle>
                 <CardDescription>
-                  Global settings for the SafeCity platform
+                  Global settings for the Safe City platform
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -172,7 +256,7 @@ const SettingsPanel = () => {
                       <Globe className="h-4 w-4" />
                       <Label htmlFor="public-map">Public Crime Map</Label>
                     </div>
-                    <Switch id="public-map" defaultChecked />
+                    <Switch id="public-map" defaultChecked onCheckedChange={() => handleSettingSaved()} />
                   </div>
                   
                   <div className="flex items-center justify-between">
@@ -180,7 +264,7 @@ const SettingsPanel = () => {
                       <Bell className="h-4 w-4" />
                       <Label htmlFor="auto-alerts">Automated Alert System</Label>
                     </div>
-                    <Switch id="auto-alerts" defaultChecked />
+                    <Switch id="auto-alerts" defaultChecked onCheckedChange={() => handleSettingSaved()} />
                   </div>
                   
                   <div className="flex items-center justify-between">
@@ -188,7 +272,7 @@ const SettingsPanel = () => {
                       <Shield className="h-4 w-4" />
                       <Label htmlFor="require-approval">Require Report Approval</Label>
                     </div>
-                    <Switch id="require-approval" />
+                    <Switch id="require-approval" onCheckedChange={() => handleSettingSaved()} />
                   </div>
                 </div>
               </CardContent>
@@ -208,6 +292,7 @@ const SettingsPanel = () => {
                     <select 
                       id="data-retention" 
                       className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      onChange={() => handleSettingSaved()}
                     >
                       <option value="30">30 days</option>
                       <option value="90">90 days</option>
@@ -216,6 +301,22 @@ const SettingsPanel = () => {
                       <option value="730">2 years</option>
                       <option value="0">Indefinite</option>
                     </select>
+                  </div>
+                  
+                  <div className="pt-4">
+                    <Button 
+                      variant="outline" 
+                      className="w-full sm:w-auto text-red-600 border-red-200 hover:bg-red-50"
+                      onClick={() => {
+                        toast({
+                          title: "Action Required",
+                          description: "This action requires administrative password. Please check your email for verification.",
+                          variant: "destructive"
+                        });
+                      }}
+                    >
+                      Clear Inactive User Data
+                    </Button>
                   </div>
                 </div>
               </CardContent>
