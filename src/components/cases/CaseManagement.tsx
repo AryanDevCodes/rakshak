@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -45,16 +44,16 @@ interface CaseNote {
   timestamp: string;
 }
 
-// Mock data
+// Mock data with Indian locations
 const mockCases: Case[] = [
   {
     id: 'C-2023-001',
-    title: 'Shoplifting at Main Street Market',
+    title: 'Shoplifting at Delhi Main Market',
     type: 'Theft',
     status: 'open',
     priority: 'medium',
-    location: 'Main Street Market, 123 Main St',
-    description: 'Store owner reported shoplifting incident. Security camera footage available.',
+    location: 'Delhi Main Market, Connaught Place',
+    description: 'Store owner reported shoplifting incident. CCTV footage available for review.',
     reportedAt: '2023-04-10T14:30:00Z',
     assignedTo: null,
     lastUpdated: '2023-04-10T14:30:00Z',
@@ -62,57 +61,57 @@ const mockCases: Case[] = [
   },
   {
     id: 'C-2023-002',
-    title: 'Vandalism at City Park',
+    title: 'Vandalism at Lodi Gardens',
     type: 'Vandalism',
     status: 'assigned',
     priority: 'low',
-    location: 'City Park, North Entrance',
-    description: 'Graffiti on park structures and benches. Park security has photos.',
+    location: 'Lodi Gardens, New Delhi',
+    description: 'Graffiti on park structures and historical monuments. Park security has photos.',
     reportedAt: '2023-04-11T09:15:00Z',
-    assignedTo: 'Officer Johnson',
+    assignedTo: 'Officer Singh',
     lastUpdated: '2023-04-11T10:20:00Z',
     caseNotes: [
       {
         id: 'CN-001',
         content: 'Received photos from park security. Will visit site tomorrow morning.',
-        author: 'Officer Johnson',
+        author: 'Officer Singh',
         timestamp: '2023-04-11T10:20:00Z'
       }
     ]
   },
   {
     id: 'C-2023-003',
-    title: 'Assault at Downtown Bar',
+    title: 'Assault at Mumbai Club',
     type: 'Assault',
     status: 'in-progress',
     priority: 'high',
-    location: 'The Blue Note Bar, 456 Center St',
-    description: 'Physical altercation between two individuals. One victim transported to hospital.',
+    location: 'Starlight Club, Bandra, Mumbai',
+    description: 'Physical altercation between two individuals. One victim transported to Lilavati Hospital.',
     reportedAt: '2023-04-09T23:45:00Z',
-    assignedTo: 'Officer Miller',
+    assignedTo: 'Officer Sharma',
     lastUpdated: '2023-04-10T08:30:00Z',
     caseNotes: [
       {
         id: 'CN-002',
         content: 'Victim statement collected. Working on locating witnesses.',
-        author: 'Officer Miller',
+        author: 'Officer Sharma',
         timestamp: '2023-04-10T08:30:00Z'
       },
       {
         id: 'CN-003',
-        content: 'Bar staff provided security footage. Two witnesses identified.',
-        author: 'Officer Miller',
+        content: 'Club staff provided security footage. Two witnesses identified.',
+        author: 'Officer Sharma',
         timestamp: '2023-04-10T15:45:00Z'
       }
     ]
   },
   {
     id: 'C-2023-004',
-    title: 'Suspicious Activity',
+    title: 'Suspicious Activity in Residential Area',
     type: 'Suspicious Activity',
     status: 'open',
     priority: 'medium',
-    location: 'Riverside Apartments, Building C',
+    location: 'Vasant Kunj Apartments, Block C, New Delhi',
     description: 'Resident reported unknown individuals trying door handles in the hallway.',
     reportedAt: '2023-04-11T02:20:00Z',
     assignedTo: null,
@@ -125,28 +124,28 @@ const mockCases: Case[] = [
     type: 'Theft',
     status: 'closed',
     priority: 'low',
-    location: 'Downtown Parking Garage, Level 2',
+    location: 'Select Citywalk Mall Parking, Saket, Delhi',
     description: 'Vehicle window broken, personal items stolen from car.',
     reportedAt: '2023-04-08T17:30:00Z',
-    assignedTo: 'Officer Johnson',
+    assignedTo: 'Officer Patel',
     lastUpdated: '2023-04-10T16:15:00Z',
     caseNotes: [
       {
         id: 'CN-004',
         content: 'Collected evidence and took photos of the scene.',
-        author: 'Officer Johnson',
+        author: 'Officer Patel',
         timestamp: '2023-04-08T18:45:00Z'
       },
       {
         id: 'CN-005',
-        content: 'No usable fingerprints found. Garage camera footage was reviewed but inconclusive.',
-        author: 'Officer Johnson',
+        content: 'No usable fingerprints found. Mall camera footage was reviewed but inconclusive.',
+        author: 'Officer Patel',
         timestamp: '2023-04-09T11:30:00Z'
       },
       {
         id: 'CN-006',
         content: 'Case closed due to lack of leads. Owner informed and report filed for insurance.',
-        author: 'Officer Johnson',
+        author: 'Officer Patel',
         timestamp: '2023-04-10T16:15:00Z'
       }
     ]

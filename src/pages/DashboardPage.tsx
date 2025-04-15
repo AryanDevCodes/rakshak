@@ -10,9 +10,9 @@ const DashboardPage = () => {
   
   const getDashboardTitle = () => {
     if (role === 'admin') {
-      return "Administrative Control Room";
+      return "Administrative Control Center";
     }
-    return "Officer Control Room";
+    return "Officer Control Center";
   };
 
   return (
@@ -26,7 +26,7 @@ const DashboardPage = () => {
         <div className="bg-white p-6 rounded-lg border border-amber-200 shadow-sm">
           <div className="mb-4">
             <p className="text-amber-800">
-              Welcome to the control room. Here you can monitor all activities, respond to incidents, and manage your team's operations.
+              Welcome to the control center. Here you can monitor all activities, respond to incidents across India, and manage your team's operations.
             </p>
           </div>
           <OfficerDashboard />

@@ -1,7 +1,7 @@
 
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./contexts/AuthContext";
 import Index from "./pages/Index";
@@ -21,10 +21,18 @@ import ReportsPage from "./pages/ReportsPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 // Create a new QueryClient instance
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    },
+  },
+});
 
 const App = () => {
-  console.log("App rendering for Surakshit Nagar - Safe City");
+  console.log("App rendering for Safe City Portal - India");
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
@@ -65,15 +73,21 @@ const App = () => {
             </Route>
             
             {/* Redirect old paths to new role-specific paths */}
-            <Route path="/dashboard" element={<ProtectedRoute allowedRoles={['officer', 'admin']} />}>
-              <Route index element={<DashboardPage />} />
-            </Route>
-            <Route path="/cases" element={<ProtectedRoute allowedRoles={['officer', 'admin']} />}>
-              <Route index element={<CasesPage />} />
-            </Route>
-            <Route path="/incidents" element={<ProtectedRoute allowedRoles={['officer', 'admin']} />}>
-              <Route index element={<IncidentsPage />} />
-            </Route>
+            <Route path="/dashboard" element={
+              <ProtectedRoute allowedRoles={['officer', 'admin']}>
+                <Navigate to="/officer/dashboard" replace />
+              </ProtectedRoute>
+            } />
+            <Route path="/cases" element={
+              <ProtectedRoute allowedRoles={['officer', 'admin']}>
+                <Navigate to="/officer/cases" replace />
+              </ProtectedRoute>
+            } />
+            <Route path="/incidents" element={
+              <ProtectedRoute allowedRoles={['officer', 'admin']}>
+                <Navigate to="/officer/incidents" replace />
+              </ProtectedRoute>
+            } />
             
             {/* Catch-all route */}
             <Route path="*" element={<NotFound />} />
