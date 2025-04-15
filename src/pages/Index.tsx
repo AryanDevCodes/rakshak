@@ -20,7 +20,7 @@ const Index = () => {
             <div className="space-y-6">
               <div>
                 <h1 className="text-4xl font-bold tracking-tight mb-3 text-amber-900">
-                  Surakshit Nagar - Together for a Safer India
+                  सुरक्षित नगर - Together for a Safer India
                 </h1>
                 <p className="text-lg text-amber-800 max-w-md">
                   Join our community effort to make our cities safer through easy reporting, real-time alerts, and local vigilance.
@@ -108,7 +108,7 @@ const Index = () => {
               </div>
               <h3 className="text-lg font-semibold mb-2 text-amber-900">Report Incidents</h3>
               <p className="text-amber-800 mb-4">
-                Easily submit reports about incidents or suspicious activities with location and photos.
+                Easily submit reports about crimes or suspicious activities with location and photos.
               </p>
               <Link to="/report" className="text-orange-600 font-medium text-sm flex items-center hover:text-orange-700">
                 Report Now <ArrowRight className="ml-1 h-4 w-4" />
@@ -153,10 +153,10 @@ const Index = () => {
         <div className="rounded-xl overflow-hidden bg-gradient-to-r from-orange-600 to-amber-600 text-white p-8 md:p-12">
           <div className="md:max-w-md space-y-4">
             <h2 className="text-2xl md:text-3xl font-bold">
-              Join Surakshit Nagrik Initiative
+              Join Surakshit Nagrik initiative
             </h2>
             <p className="opacity-90">
-              Be part of making our neighborhoods safer. Report incidents, stay informed, and help your community thrive together.
+              Be part of making our mohallas safer. Report incidents, stay informed, and help your community thrive together.
             </p>
             <div className="pt-4">
               <Button variant="secondary" size="lg" className="bg-white text-amber-900 hover:bg-amber-100">
@@ -172,10 +172,10 @@ const Index = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center mb-4 md:mb-0">
               <Shield className="h-6 w-6 text-orange-600 mr-2" />
-              <span className="text-lg font-semibold text-orange-800">Surakshit Nagar</span>
+              <span className="text-lg font-semibold text-orange-800">सुरक्षित नगर</span>
             </div>
             <div className="text-sm text-amber-700">
-              © 2025 Surakshit Nagar. All rights reserved. <span className="mx-2">·</span> 
+              © 2025 सुरक्षित नगर. All rights reserved. <span className="mx-2">·</span> 
               <a href="#" className="hover:text-orange-700">Privacy Policy</a> <span className="mx-2">·</span> 
               <a href="#" className="hover:text-orange-700">Terms of Service</a>
             </div>
