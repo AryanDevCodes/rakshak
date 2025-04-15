@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -19,35 +18,32 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Define base navigation items available to all users
   const baseNavItems = [
-    { name: 'मुख्य पृष्ठ (Home)', path: '/', icon: <Home className="h-5 w-5 mr-2" /> },
+    { name: 'Home', path: '/', icon: <Home className="h-5 w-5 mr-2" /> },
   ];
   
-  // Define role-specific navigation items with Indian terminology
   const userNavItems = [
-    { name: 'शिकायत दर्ज करें (Report)', path: '/report', icon: <FileText className="h-5 w-5 mr-2" /> },
-    { name: 'आपातकालीन सहायता (Emergency)', path: '/emergency', icon: <AlertCircle className="h-5 w-5 mr-2" /> },
-    { name: 'सुरक्षा मानचित्र (Safety Map)', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> },
+    { name: 'Report Incident', path: '/report', icon: <FileText className="h-5 w-5 mr-2" /> },
+    { name: 'Emergency', path: '/emergency', icon: <AlertCircle className="h-5 w-5 mr-2" /> },
+    { name: 'Safety Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> },
   ];
   
   const officerNavItems = [
-    { name: 'नियंत्रण कक्ष (Control Room)', path: '/officer/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
-    { name: 'अपराध रिपोर्ट (Reports)', path: '/incidents', icon: <BadgeAlert className="h-5 w-5 mr-2" /> },
-    { name: 'केस फाइल (Case Files)', path: '/officer/cases', icon: <Briefcase className="h-5 w-5 mr-2" /> },
-    { name: 'सुरक्षा मानचित्र (Safety Map)', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> },
+    { name: 'Control Room', path: '/officer/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
+    { name: 'Incident Reports', path: '/incidents', icon: <BadgeAlert className="h-5 w-5 mr-2" /> },
+    { name: 'Case Files', path: '/officer/cases', icon: <Briefcase className="h-5 w-5 mr-2" /> },
+    { name: 'Safety Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> },
   ];
   
   const adminNavItems = [
-    { name: 'प्रशासन कक्ष (Admin Room)', path: '/admin/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
-    { name: 'उपयोगकर्ता (Users)', path: '/users', icon: <Users className="h-5 w-5 mr-2" /> },
-    { name: 'सभी रिपोर्ट (All Reports)', path: '/reports', icon: <ScrollText className="h-5 w-5 mr-2" /> },
-    { name: 'केस प्रबंधन (Case Management)', path: '/admin/cases', icon: <Briefcase className="h-5 w-5 mr-2" /> },
-    { name: 'विश्लेषण (Analytics)', path: '/analytics', icon: <BarChart3 className="h-5 w-5 mr-2" /> },
-    { name: 'सेटिंग्स (Settings)', path: '/settings', icon: <Settings className="h-5 w-5 mr-2" /> },
+    { name: 'Admin Room', path: '/admin/dashboard', icon: <Shield className="h-5 w-5 mr-2" /> },
+    { name: 'Users', path: '/users', icon: <Users className="h-5 w-5 mr-2" /> },
+    { name: 'All Reports', path: '/reports', icon: <ScrollText className="h-5 w-5 mr-2" /> },
+    { name: 'Case Management', path: '/admin/cases', icon: <Briefcase className="h-5 w-5 mr-2" /> },
+    { name: 'Analytics', path: '/analytics', icon: <BarChart3 className="h-5 w-5 mr-2" /> },
+    { name: 'Settings', path: '/settings', icon: <Settings className="h-5 w-5 mr-2" /> },
   ];
-  
-  // Combine base items with role-specific items
+
   let navItems = [...baseNavItems];
   if (isAuthenticated) {
     if (role === 'user') {
@@ -58,14 +54,12 @@ const Navbar = () => {
       navItems = [...navItems, ...adminNavItems];
     }
   } else {
-    // For non-authenticated users, show some public nav items
     navItems = [...navItems, 
-      { name: 'आपातकालीन सहायता (Emergency)', path: '/emergency', icon: <AlertCircle className="h-5 w-5 mr-2" /> },
-      { name: 'सुरक्षा मानचित्र (Safety Map)', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> }
+      { name: 'Emergency', path: '/emergency', icon: <AlertCircle className="h-5 w-5 mr-2" /> },
+      { name: 'Safety Map', path: '/map', icon: <Map className="h-5 w-5 mr-2" /> }
     ];
   }
 
-  // Function to check if a link is active
   const isActiveLink = (path: string) => {
     if (path === '/') {
       return location.pathname === '/';
@@ -84,7 +78,6 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
             {navItems.map((item) => (
               <Link 
@@ -126,7 +119,6 @@ const Navbar = () => {
             )}
           </div>
           
-          {/* Mobile Navigation */}
           <div className="md:hidden flex items-center">
             {isAuthenticated ? (
               <div className="mr-4">

@@ -8,7 +8,6 @@ import { Shield } from 'lucide-react';
 const DashboardPage = () => {
   const { role } = useAuth();
   
-  // Determine dashboard title based on user role
   const getDashboardTitle = () => {
     if (role === 'admin') {
       return "Administrative Control Room";
