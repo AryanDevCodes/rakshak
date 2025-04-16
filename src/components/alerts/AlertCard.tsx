@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { AlertTriangle, Info, Bell, Check } from "lucide-react";
 import { Alert } from '@/contexts/AlertsContext';
 import AlertBadge from './AlertBadge';
+import { cn } from "@/lib/utils";
 
 interface AlertCardProps {
   alert: Alert;
