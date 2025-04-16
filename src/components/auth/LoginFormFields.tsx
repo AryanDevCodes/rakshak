@@ -33,7 +33,6 @@ interface LoginFormFieldsProps {
 }
 
 const LoginFormFields = ({ onSubmit, isLoggingIn, selectedRole, setFormRef }: LoginFormFieldsProps) => {
-  // Initialize form
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -42,32 +41,11 @@ const LoginFormFields = ({ onSubmit, isLoggingIn, selectedRole, setFormRef }: Lo
     },
   });
 
-  // Set form reference if needed for parent component
   React.useEffect(() => {
     if (setFormRef) {
       setFormRef(form);
     }
   }, [form, setFormRef]);
-
-  // Pre-fill demo credentials based on role
-  React.useEffect(() => {
-    let email = '';
-    
-    switch(selectedRole) {
-      case 'officer':
-        email = 'officer@police.gov';
-        break;
-      case 'admin':
-        email = 'admin@safecity.org';
-        break;
-      case 'user':
-      default:
-        email = 'john@example.com';
-    }
-    
-    form.setValue('email', email);
-    form.setValue('password', 'password123');
-  }, [selectedRole, form]);
 
   return (
     <Form {...form}>
