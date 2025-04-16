@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { authService } from '@/services/api';
 import { toast } from '@/hooks/use-toast';
@@ -12,6 +13,7 @@ export interface User {
   email: string;
   role: UserRole;
   badge?: string;
+  avatar?: string; // Add avatar property
 }
 
 // Define permissions for each role
@@ -109,7 +111,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             name: userData.name,
             email: userData.email,
             role: userRole,
-            badge: userData.badge
+            badge: userData.badge,
+            avatar: userData.avatar // Add avatar from user data
           });
         } catch (error) {
           console.error('Session validation failed:', error);
@@ -134,7 +137,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         name: userData.name,
         email: userData.email,
         role: userRole,
-        badge: userData.badge
+        badge: userData.badge,
+        avatar: userData.avatar // Add avatar from login response
       });
       
       toast({
