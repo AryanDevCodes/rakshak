@@ -2,7 +2,7 @@
 import React from 'react';
 import Navbar from '@/components/layout/Navbar';
 import LoginForm from '@/components/auth/LoginForm';
-import { LogIn, Fingerprint } from 'lucide-react';
+import { Fingerprint } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AadharLoginForm from '@/components/auth/AadharLoginForm';
 import AnonymousLoginButton from '@/components/auth/AnonymousLoginButton';
@@ -14,8 +14,12 @@ const LoginPage = () => {
       <Navbar />
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-md mx-auto mb-8 text-center">
-          <LogIn className="h-12 w-12 mx-auto text-police-700 mb-4" />
-          <h1 className="text-2xl font-bold mb-2">SafeCity Authentication</h1>
+          <img 
+            src="/lovable-uploads/1d0c5a0a-0a5c-49a3-baff-b8fff6dbce2a.png"
+            alt="Rakshak Logo" 
+            className="h-16 w-16 mx-auto mb-4" 
+          />
+          <h1 className="text-2xl font-bold mb-2">Rakshak Authentication</h1>
           <p className="text-muted-foreground">
             Sign in to access various features based on your role
           </p>

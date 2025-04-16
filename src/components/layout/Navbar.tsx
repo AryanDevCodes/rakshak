@@ -75,8 +75,15 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Link to="/" className="flex items-center space-x-2">
-              <Shield className="h-8 w-8 text-orange-600" />
-              <span className="text-xl font-bold text-orange-800">Safe City</span>
+              <img 
+                src="/lovable-uploads/1d0c5a0a-0a5c-49a3-baff-b8fff6dbce2a.png" 
+                alt="Rakshak Logo" 
+                className="h-10 w-10" 
+              />
+              <div className="flex flex-col">
+                <span className="text-xl font-bold text-orange-800">Rakshak</span>
+                <span className="text-xs text-amber-700">Smart Crime Reporting System</span>
+              </div>
             </Link>
           </div>
 
@@ -154,7 +161,19 @@ const Navbar = () => {
                 </Button>
               </SheetTrigger>
               <SheetContent className="bg-orange-50 border-l border-amber-200">
-                <div className="flex flex-col space-y-4 mt-8">
+                <div className="flex items-center space-x-2 mb-6 mt-2">
+                  <img 
+                    src="/lovable-uploads/1d0c5a0a-0a5c-49a3-baff-b8fff6dbce2a.png" 
+                    alt="Rakshak Logo" 
+                    className="h-8 w-8" 
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-lg font-bold text-orange-800">Rakshak</span>
+                    <span className="text-xs text-amber-700">Smart Crime Reporting System</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col space-y-4">
                   {navItems.map((item) => (
                     <Link
                       key={item.path}

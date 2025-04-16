@@ -2,18 +2,20 @@
 import React from 'react';
 import Navbar from '@/components/layout/Navbar';
 import CrimeMap from '@/components/map/CrimeMap';
-import { MapPin } from 'lucide-react';
+import { MapPin, AlertCircle } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const CrimeMapPage = () => {
-  const { permissions } = useAuth();
+  const { permissions, isAuthenticated } = useAuth();
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6 flex items-center">
-          <MapPin className="h-8 w-8 text-police-700 mr-2" />
+          <MapPin className="h-8 w-8 text-orange-700 mr-2" />
           <h1 className="text-2xl font-bold">Crime Mapping System</h1>
         </div>
         
@@ -26,10 +28,33 @@ const CrimeMapPage = () => {
             )}
           </p>
         </div>
+
+        {!isAuthenticated && (
+          <Alert variant="warning" className="mb-6">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              Sign in to access detailed crime statistics and personalized safety recommendations.
+            </AlertDescription>
+          </Alert>
+        )}
         
-        <div className="bg-white p-6 rounded-lg border shadow-sm">
-          <CrimeMap />
-        </div>
+        <Card className="shadow-sm">
+          <CardHeader className="bg-white pb-0">
+            <div className="flex justify-between items-center">
+              <h2 className="text-lg font-medium">Crime Hotspots</h2>
+              {permissions.canAccessAnalytics && (
+                <div className="text-sm text-amber-600">
+                  *Analytics Mode Enabled
+                </div>
+              )}
+            </div>
+          </CardHeader>
+          <CardContent className="pt-6 bg-white">
+            <div className="h-[60vh]">
+              <CrimeMap />
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
