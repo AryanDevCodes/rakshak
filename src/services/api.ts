@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 import { toast } from '@/hooks/use-toast';
 
@@ -93,15 +94,35 @@ export const authService = {
         name: response.data.name,
         email: response.data.email,
         role: response.data.roles.find((role: string) => role.startsWith('ROLE_')).replace('ROLE_', '').toLowerCase(),
-        avatar: null,
-        badge: response.data.badge
+        avatar: response.data.avatar,
+        badge: response.data.badge,
+        aadharVerified: response.data.aadharVerified,
+        performanceRating: response.data.performanceRating
       }));
     }
     return response.data;
   },
   
-  register: async (name: string, email: string, password: string, role: string) => {
-    const response = await apiClient.post('/auth/signup', { name, email, password, role });
+  loginWithAadhar: async (aadharNumber: string, otp: string) => {
+    const response = await apiClient.post('/auth/aadhar-login', { aadharNumber, otp });
+    if (response.data.token) {
+      localStorage.setItem('safecity_token', response.data.token);
+      localStorage.setItem('safecity_user', JSON.stringify(response.data));
+    }
+    return response.data;
+  },
+  
+  loginAnonymously: async () => {
+    const response = await apiClient.post('/auth/anonymous');
+    if (response.data.token) {
+      localStorage.setItem('safecity_token', response.data.token);
+      localStorage.setItem('safecity_user', JSON.stringify(response.data));
+    }
+    return response.data;
+  },
+  
+  register: async (name: string, email: string, password: string, role: string, aadharNumber?: string) => {
+    const response = await apiClient.post('/auth/signup', { name, email, password, role, aadharNumber });
     return response.data;
   },
   
@@ -112,6 +133,14 @@ export const authService = {
   
   getCurrentUser: async () => {
     return await apiClient.get('/auth/user');
+  },
+  
+  verifyAadhar: async (aadharNumber: string) => {
+    return await apiClient.post('/auth/verify-aadhar', { aadharNumber });
+  },
+  
+  requestOtp: async (aadharNumber: string) => {
+    return await apiClient.post('/auth/request-otp', { aadharNumber });
   }
 };
 
@@ -156,6 +185,17 @@ export const reportService = {
     return await apiClient.post('/reports', reportData);
   },
   
+  createVoiceReport: async (audioBlob: Blob, metadata: any) => {
+    const formData = new FormData();
+    formData.append('audio', audioBlob);
+    formData.append('metadata', JSON.stringify(metadata));
+    return await apiClient.post('/reports/voice', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
+  
   approveReport: async (id: string) => {
     return await apiClient.put(`/reports/${id}/approve`);
   },
@@ -181,6 +221,14 @@ export const userService = {
   
   updateUserRole: async (id: string, role: string) => {
     return await apiClient.put(`/users/${id}/role`, { role });
+  },
+  
+  getOfficerPerformance: async (id: string) => {
+    return await apiClient.get(`/users/${id}/performance`);
+  },
+  
+  getAllOfficersPerformance: async () => {
+    return await apiClient.get('/users/officers/performance');
   }
 };
 
@@ -204,6 +252,48 @@ export const incidentService = {
   
   deleteIncident: async (id: string) => {
     return await apiClient.delete(`/incidents/${id}`);
+  },
+  
+  getIncidentsForMap: async (bounds?: { north: number, south: number, east: number, west: number }) => {
+    return await apiClient.get('/incidents/map', { params: bounds });
+  }
+};
+
+// SOS Services
+export const sosService = {
+  triggerSOS: async (location: { lat: number, lng: number }, details?: string) => {
+    return await apiClient.post('/sos/trigger', { location, details });
+  },
+  
+  getAllActiveSOSAlerts: async () => {
+    return await apiClient.get('/sos/active');
+  },
+  
+  respondToSOS: async (id: string, officerId: string) => {
+    return await apiClient.post(`/sos/${id}/respond`, { officerId });
+  },
+  
+  resolveSOS: async (id: string) => {
+    return await apiClient.put(`/sos/${id}/resolve`);
+  }
+};
+
+// Analytics Services
+export const analyticsService = {
+  getCrimeStatistics: async (params?: any) => {
+    return await apiClient.get('/analytics/crime-statistics', { params });
+  },
+  
+  getOfficerPerformanceMetrics: async () => {
+    return await apiClient.get('/analytics/officer-performance');
+  },
+  
+  getCrimeTrends: async (timeframe: string = 'monthly') => {
+    return await apiClient.get(`/analytics/crime-trends?timeframe=${timeframe}`);
+  },
+  
+  getPredictiveAnalysis: async (area: string) => {
+    return await apiClient.get(`/analytics/predictive?area=${area}`);
   }
 };
 
@@ -212,5 +302,7 @@ export default {
   caseService,
   reportService,
   userService,
-  incidentService
+  incidentService,
+  sosService,
+  analyticsService
 };

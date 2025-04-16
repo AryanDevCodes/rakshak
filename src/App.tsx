@@ -19,6 +19,7 @@ import CasesPage from "./pages/CasesPage";
 import IncidentsPage from "./pages/IncidentsPage";
 import ReportsPage from "./pages/ReportsPage";
 import AlertsPage from "./pages/AlertsPage";
+import CrimeMapPage from "./pages/CrimeMapPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { AlertsProvider } from "./contexts/AlertsContext";
 
@@ -53,40 +54,51 @@ const App = () => {
               <Route element={<ProtectedRoute allowedRoles={['user', 'officer', 'admin']} />}>
                 <Route path="/report" element={<ReportPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
+                <Route path="/crime-map" element={<CrimeMapPage />} />
               </Route>
               
               {/* Protected routes for officers */}
-              <Route element={<ProtectedRoute allowedRoles={['officer']} />}>
+              <Route element={<ProtectedRoute allowedRoles={['officer', 'admin']} />}>
                 <Route path="/officer/dashboard" element={<DashboardPage />} />
                 <Route path="/officer/cases" element={<CasesPage />} />
                 <Route path="/officer/incidents" element={<IncidentsPage />} />
                 <Route path="/officer/reports" element={<ReportsPage />} />
+                <Route path="/officer/alerts" element={<AlertsPage />} />
               </Route>
               
-              {/* Protected routes for admins */}
+              {/* Protected routes for admins only */}
               <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
                 <Route path="/admin/dashboard" element={<DashboardPage />} />
                 <Route path="/admin/cases" element={<CasesPage />} />
                 <Route path="/admin/incidents" element={<IncidentsPage />} />
                 <Route path="/admin/reports" element={<ReportsPage />} />
-                <Route path="/users" element={<UsersPage />} />
-                <Route path="/analytics" element={<AnalyticsPage />} />
-                <Route path="/reports" element={<ReportsPage />} />
+                <Route path="/admin/users" element={<UsersPage />} />
+                <Route path="/admin/analytics" element={<AnalyticsPage />} />
+                <Route path="/admin/alerts" element={<AlertsPage />} />
               </Route>
               
               {/* Redirect old paths to new role-specific paths */}
               <Route path="/dashboard" element={
-                <Navigate to="/officer/dashboard" replace />
+                <Navigate to="/admin/dashboard" replace />
               } />
               <Route path="/cases" element={
-                <Navigate to="/officer/cases" replace />
+                <Navigate to="/admin/cases" replace />
               } />
               <Route path="/incidents" element={
-                <Navigate to="/officer/incidents" replace />
+                <Navigate to="/admin/incidents" replace />
               } />
-              
-              {/* Add new alerts route */}
-              <Route path="/alerts" element={<AlertsPage />} />
+              <Route path="/users" element={
+                <Navigate to="/admin/users" replace />
+              } />
+              <Route path="/analytics" element={
+                <Navigate to="/admin/analytics" replace />
+              } />
+              <Route path="/reports" element={
+                <Navigate to="/admin/reports" replace />
+              } />
+              <Route path="/alerts" element={
+                <Navigate to="/admin/alerts" replace />
+              } />
               
               {/* Catch-all route */}
               <Route path="*" element={<NotFound />} />

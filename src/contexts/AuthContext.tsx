@@ -13,7 +13,9 @@ export interface User {
   email: string;
   role: UserRole;
   badge?: string;
-  avatar?: string; // Add avatar property
+  avatar?: string;
+  aadharVerified?: boolean;
+  performanceRating?: number;
 }
 
 // Define permissions for each role
@@ -24,6 +26,10 @@ export interface RolePermissions {
   canApproveReports: boolean;
   canEditAlerts: boolean;
   canViewMap: boolean;
+  canAccessAnalytics: boolean;
+  canViewPerformanceInsights: boolean;
+  canUsePredictiveAnalysis: boolean;
+  canViewOfficerPerformance: boolean;
 }
 
 // Define auth context type
@@ -33,7 +39,9 @@ interface AuthContextType {
   role: UserRole;
   permissions: RolePermissions;
   login: (email: string, password: string, role: UserRole) => Promise<void>;
-  register: (name: string, email: string, password: string, role: UserRole) => Promise<void>;
+  register: (name: string, email: string, password: string, role: UserRole, aadharNumber?: string) => Promise<void>;
+  loginWithAadhar: (aadharNumber: string, otp: string) => Promise<void>;
+  loginAnonymously: () => Promise<void>;
   logout: () => void;
   loading: boolean;
 }
@@ -49,6 +57,10 @@ const getRolePermissions = (role: UserRole): RolePermissions => {
         canApproveReports: true,
         canEditAlerts: true,
         canViewMap: true,
+        canAccessAnalytics: true,
+        canViewPerformanceInsights: true,
+        canUsePredictiveAnalysis: true,
+        canViewOfficerPerformance: true,
       };
     case 'officer':
       return {
@@ -58,6 +70,10 @@ const getRolePermissions = (role: UserRole): RolePermissions => {
         canApproveReports: true,
         canEditAlerts: true,
         canViewMap: true,
+        canAccessAnalytics: false,
+        canViewPerformanceInsights: false,
+        canUsePredictiveAnalysis: false,
+        canViewOfficerPerformance: false,
       };
     case 'user':
       return {
@@ -67,6 +83,10 @@ const getRolePermissions = (role: UserRole): RolePermissions => {
         canApproveReports: false,
         canEditAlerts: false,
         canViewMap: true,
+        canAccessAnalytics: false,
+        canViewPerformanceInsights: false,
+        canUsePredictiveAnalysis: false,
+        canViewOfficerPerformance: false,
       };
     default:
       return {
@@ -76,6 +96,10 @@ const getRolePermissions = (role: UserRole): RolePermissions => {
         canApproveReports: false,
         canEditAlerts: false,
         canViewMap: false,
+        canAccessAnalytics: false,
+        canViewPerformanceInsights: false,
+        canUsePredictiveAnalysis: false,
+        canViewOfficerPerformance: false,
       };
   }
 };
@@ -88,6 +112,8 @@ export const AuthContext = createContext<AuthContextType>({
   permissions: getRolePermissions(null),
   login: async () => {},
   register: async () => {},
+  loginWithAadhar: async () => {},
+  loginAnonymously: async () => {},
   logout: () => {},
   loading: false
 });
@@ -112,7 +138,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             email: userData.email,
             role: userRole,
             badge: userData.badge,
-            avatar: userData.avatar // Add avatar from user data
+            avatar: userData.avatar,
+            aadharVerified: userData.aadharVerified,
+            performanceRating: userData.performanceRating
           });
         } catch (error) {
           console.error('Session validation failed:', error);
@@ -138,7 +166,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         email: userData.email,
         role: userRole,
         badge: userData.badge,
-        avatar: userData.avatar // Add avatar from login response
+        avatar: userData.avatar,
+        aadharVerified: userData.aadharVerified,
+        performanceRating: userData.performanceRating
       });
       
       toast({
@@ -155,10 +185,71 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
   
-  const register = async (name: string, email: string, password: string, role: UserRole): Promise<void> => {
+  const loginWithAadhar = async (aadharNumber: string, otp: string): Promise<void> => {
     setLoading(true);
     try {
-      await authService.register(name, email, password, role);
+      const response = await authService.loginWithAadhar(aadharNumber, otp);
+      const userData = response;
+      const userRole = userData.roles[0].replace('ROLE_', '').toLowerCase() as UserRole;
+      
+      setUser({
+        id: userData.id,
+        name: userData.name,
+        email: userData.email,
+        role: userRole,
+        badge: userData.badge,
+        avatar: userData.avatar,
+        aadharVerified: true,
+        performanceRating: userData.performanceRating
+      });
+      
+      toast({
+        title: "Aadhar verification successful",
+        description: `Welcome, ${userData.name}!`,
+        variant: "default",
+      });
+      
+    } catch (error) {
+      console.error('Aadhar login failed:', error);
+      throw new Error(error instanceof Error ? error.message : 'Aadhar verification failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const loginAnonymously = async (): Promise<void> => {
+    setLoading(true);
+    try {
+      const response = await authService.loginAnonymously();
+      const userData = response;
+      
+      setUser({
+        id: userData.id,
+        name: 'Anonymous User',
+        email: '',
+        role: 'user',
+        avatar: undefined,
+        aadharVerified: false
+      });
+      
+      toast({
+        title: "Anonymous login successful",
+        description: "You are now using the app anonymously. Some features may be limited.",
+        variant: "default",
+      });
+      
+    } catch (error) {
+      console.error('Anonymous login failed:', error);
+      throw new Error(error instanceof Error ? error.message : 'Anonymous login failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const register = async (name: string, email: string, password: string, role: UserRole, aadharNumber?: string): Promise<void> => {
+    setLoading(true);
+    try {
+      await authService.register(name, email, password, role, aadharNumber);
       toast({
         title: "Registration successful",
         description: "Please log in with your new account",
@@ -186,6 +277,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     permissions,
     login,
     register,
+    loginWithAadhar,
+    loginAnonymously,
     logout,
     loading
   };
