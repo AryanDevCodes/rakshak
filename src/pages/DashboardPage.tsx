@@ -3,6 +3,7 @@ import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/layout/Navbar';
 import OfficerDashboard from '@/components/dashboard/OfficerDashboard';
+import AdminDashboard from '@/components/admin/AdminDashboard';
 import { Shield } from 'lucide-react'; 
 
 const DashboardPage = () => {
@@ -24,12 +25,7 @@ const DashboardPage = () => {
           <h1 className="text-2xl font-bold text-amber-900">{getDashboardTitle()}</h1>
         </div>
         <div className="bg-white p-6 rounded-lg border border-amber-200 shadow-sm">
-          <div className="mb-4">
-            <p className="text-amber-800">
-              Welcome to the control center. Here you can monitor all activities, respond to incidents across India, and manage your team's operations.
-            </p>
-          </div>
-          <OfficerDashboard />
+          {role === 'admin' ? <AdminDashboard /> : <OfficerDashboard />}
         </div>
       </div>
     </div>
