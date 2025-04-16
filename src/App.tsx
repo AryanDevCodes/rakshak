@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -17,6 +18,7 @@ import SignupPage from "./pages/SignupPage";
 import CasesPage from "./pages/CasesPage";
 import IncidentsPage from "./pages/IncidentsPage";
 import ReportsPage from "./pages/ReportsPage";
+import AlertsPage from "./pages/AlertsPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { AlertsProvider } from "./contexts/AlertsContext";
 
